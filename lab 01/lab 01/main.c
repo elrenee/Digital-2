@@ -10,12 +10,12 @@
 #define F_CPU 16000000
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "7segmentos/7segmentos.h"
 uint8_t contador1=0;
 uint8_t contador2= 0;
 uint8_t seg7=5;
 uint8_t iniciar=0;//estados de juego, espera, contar y jugar
 uint8_t botonesC=0; // pinchange
-int	lista7seg[] ={0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0X79, 0x71};
 int contador[]={0x00, 0x01, 0x02, 0x04, 0x08 };
 /****************************************/
 // Function prototypes
@@ -32,7 +32,7 @@ int main(void)
 		switch (iniciar)
 		{
 			case 0:
-			PORTD = lista7seg[seg7];// a la espera de iniciar o a que termine de contar
+			PORTD = mostrar_numero(seg7);// a la espera de iniciar o a que termine de contar
 			break;
 			case 1:
 			 //Juego de botones 2 jugadores 
@@ -41,7 +41,7 @@ int main(void)
 				 PCMSK1=0; //quitamos las interrupciones del pinchange
 				 PCMSK1 |=  (1<<PCINT8); //Habilitamos nuevamente el boton de iniciar.
 				 PORTD &= ~(1<<PORTD7); //apagamos al jugador 2
-				 PORTD = lista7seg[1];// mostramos 1 en el 7 seg
+				 PORTD = mostrar_numero(1);// mostramos 1 en el 7 seg
 				 PORTB = 0x1F; //encendemos los 4 leds y el transitor en PB4
 			 }
 			 else if (contador2>=4)
@@ -49,7 +49,7 @@ int main(void)
 				 PCMSK1=0; //quitamos las interrupciones del pinchange
 				 PCMSK1 |=  (1<<PCINT8); //Habilitamos nuevamente el boton de iniciar.
 				 PORTB = 0 ;//apagamos al jugador 1
-				 PORTD = lista7seg[2];// mostramos 2 en el 7 seg
+				 PORTD = mostrar_numero(2);// mostramos 2 en el 7 seg
 				 PORTB |= 0x0F; //encendemos los 4 leds 
 				 PORTD |= (1<<PORTD7); //ENCENDEMOS EL TRANSIS J2
 			 }
@@ -61,7 +61,7 @@ int main(void)
 				  PORTB &= ~(1<<PORTB4); //apago al J1
 				  PORTB= contador[contador2]; //mostramos el primer jugador
 				  PORTD|= (1<<PORTD7); //ENCIENDO AL J2
-				  PORTD |= lista7seg[seg7];
+				  PORTD |= mostrar_numero(seg7);
 			 }
 			break;
 		}
