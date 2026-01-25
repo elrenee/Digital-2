@@ -3,31 +3,31 @@ lab 01.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         0000002c  00800100  000002dc  00000370  2**0
+  0 .data         0000002c  00800100  000002e2  00000376  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000002dc  00000000  00000000  00000094  2**1
+  1 .text         000002e2  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000004  0080012c  0080012c  0000039c  2**0
+  2 .bss          00000004  0080012c  0080012c  000003a2  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  0000039c  2**0
+  3 .comment      00000030  00000000  00000000  000003a2  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000003cc  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000003d4  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000050  00000000  00000000  0000040c  2**0
+  5 .debug_aranges 00000070  00000000  00000000  00000414  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000824  00000000  00000000  0000045c  2**0
+  6 .debug_info   000008f5  00000000  00000000  00000484  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000006a0  00000000  00000000  00000c80  2**0
+  7 .debug_abbrev 00000750  00000000  00000000  00000d79  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000040f  00000000  00000000  00001320  2**0
+  8 .debug_line   000004dd  00000000  00000000  000014c9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000000c4  00000000  00000000  00001730  2**2
+  9 .debug_frame  000000f4  00000000  00000000  000019a8  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000400  00000000  00000000  000017f4  2**0
+ 10 .debug_str    0000041a  00000000  00000000  00001a9c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000133  00000000  00000000  00001bf4  2**0
+ 11 .debug_loc    0000016e  00000000  00000000  00001eb6  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000040  00000000  00000000  00001d27  2**0
+ 12 .debug_ranges 00000050  00000000  00000000  00002024  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -37,7 +37,7 @@ Disassembly of section .text:
    4:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
    8:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
    c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
-  10:	0c 94 ed 00 	jmp	0x1da	; 0x1da <__vector_4>
+  10:	0c 94 ea 00 	jmp	0x1d4	; 0x1d4 <__vector_4>
   14:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   18:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   1c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
@@ -46,10 +46,10 @@ Disassembly of section .text:
   28:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   2c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   30:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
-  34:	0c 94 40 01 	jmp	0x280	; 0x280 <__vector_13>
+  34:	0c 94 46 01 	jmp	0x28c	; 0x28c <__vector_13>
   38:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   3c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
-  40:	0c 94 04 01 	jmp	0x208	; 0x208 <__vector_16>
+  40:	0c 94 01 01 	jmp	0x202	; 0x202 <__vector_16>
   44:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   48:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   4c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
@@ -72,7 +72,7 @@ Disassembly of section .text:
   74:	11 e0       	ldi	r17, 0x01	; 1
   76:	a0 e0       	ldi	r26, 0x00	; 0
   78:	b1 e0       	ldi	r27, 0x01	; 1
-  7a:	ec ed       	ldi	r30, 0xDC	; 220
+  7a:	e2 ee       	ldi	r30, 0xE2	; 226
   7c:	f2 e0       	ldi	r31, 0x02	; 2
   7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
   80:	05 90       	lpm	r0, Z+
@@ -94,412 +94,422 @@ Disassembly of section .text:
   94:	a0 33       	cpi	r26, 0x30	; 48
   96:	b2 07       	cpc	r27, r18
   98:	e1 f7       	brne	.-8      	; 0x92 <.do_clear_bss_loop>
-  9a:	0e 94 88 00 	call	0x110	; 0x110 <main>
-  9e:	0c 94 6c 01 	jmp	0x2d8	; 0x2d8 <_exit>
+  9a:	0e 94 91 00 	call	0x122	; 0x122 <main>
+  9e:	0c 94 6f 01 	jmp	0x2de	; 0x2de <_exit>
 
 000000a2 <__bad_interrupt>:
   a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-000000a6 <initmr1>:
+000000a6 <mostrar_numero>:
+
+int	lista7seg[] ={0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0X79, 0x71};
+
+void mostrar_numero(uint8_t numero)
+{
+	PORTD= lista7seg[numero];
+  a6:	e8 2f       	mov	r30, r24
+  a8:	f0 e0       	ldi	r31, 0x00	; 0
+  aa:	ee 0f       	add	r30, r30
+  ac:	ff 1f       	adc	r31, r31
+  ae:	e0 50       	subi	r30, 0x00	; 0
+  b0:	ff 4f       	sbci	r31, 0xFF	; 255
+  b2:	80 81       	ld	r24, Z
+  b4:	8b b9       	out	0x0b, r24	; 11
+  b6:	08 95       	ret
+
+000000b8 <initmr1>:
 	sei();	
 }
 
 void initmr1()
 {
 	TCCR1A = 0; //Modo Normal
-  a6:	10 92 80 00 	sts	0x0080, r1	; 0x800080 <__TEXT_REGION_LENGTH__+0x7f8080>
+  b8:	10 92 80 00 	sts	0x0080, r1	; 0x800080 <__TEXT_REGION_LENGTH__+0x7f8080>
 	TCCR1B |= (1<<CS10)|(1<<CS11); //prescaler de 64
-  aa:	e1 e8       	ldi	r30, 0x81	; 129
-  ac:	f0 e0       	ldi	r31, 0x00	; 0
-  ae:	80 81       	ld	r24, Z
-  b0:	83 60       	ori	r24, 0x03	; 3
-  b2:	80 83       	st	Z, r24
+  bc:	e1 e8       	ldi	r30, 0x81	; 129
+  be:	f0 e0       	ldi	r31, 0x00	; 0
+  c0:	80 81       	ld	r24, Z
+  c2:	83 60       	ori	r24, 0x03	; 3
+  c4:	80 83       	st	Z, r24
 	TCNT1H = 0xC2;
-  b4:	82 ec       	ldi	r24, 0xC2	; 194
-  b6:	80 93 85 00 	sts	0x0085, r24	; 0x800085 <__TEXT_REGION_LENGTH__+0x7f8085>
+  c6:	82 ec       	ldi	r24, 0xC2	; 194
+  c8:	80 93 85 00 	sts	0x0085, r24	; 0x800085 <__TEXT_REGION_LENGTH__+0x7f8085>
 	TCNT1L= 0xF7; //contara de 0xC2F7 a 0xFFFF
-  ba:	87 ef       	ldi	r24, 0xF7	; 247
-  bc:	80 93 84 00 	sts	0x0084, r24	; 0x800084 <__TEXT_REGION_LENGTH__+0x7f8084>
-  c0:	08 95       	ret
+  cc:	87 ef       	ldi	r24, 0xF7	; 247
+  ce:	80 93 84 00 	sts	0x0084, r24	; 0x800084 <__TEXT_REGION_LENGTH__+0x7f8084>
+  d2:	08 95       	ret
 
-000000c2 <initimr0>:
+000000d4 <initimr0>:
 	
 	
 }
 void initimr0()
 {	
 	TCCR0A=0;	
-  c2:	14 bc       	out	0x24, r1	; 36
+  d4:	14 bc       	out	0x24, r1	; 36
 	TCCR0B |= (1<<CS02)|(1<<CS00);	//prescaler del timer de 1024
-  c4:	85 b5       	in	r24, 0x25	; 37
-  c6:	85 60       	ori	r24, 0x05	; 5
-  c8:	85 bd       	out	0x25, r24	; 37
+  d6:	85 b5       	in	r24, 0x25	; 37
+  d8:	85 60       	ori	r24, 0x05	; 5
+  da:	85 bd       	out	0x25, r24	; 37
 	TCNT0 = 158;
-  ca:	8e e9       	ldi	r24, 0x9E	; 158
-  cc:	86 bd       	out	0x26, r24	; 38
-  ce:	08 95       	ret
+  dc:	8e e9       	ldi	r24, 0x9E	; 158
+  de:	86 bd       	out	0x26, r24	; 38
+  e0:	08 95       	ret
 
-000000d0 <setup>:
+000000e2 <setup>:
 }
 /********************************/
 // NON-Interrupt subroutines
 void setup()
 {
 	cli();
-  d0:	f8 94       	cli
+  e2:	f8 94       	cli
 	DDRB = 0xFF; //Salida, Contador de decadas y multiplexeado
-  d2:	8f ef       	ldi	r24, 0xFF	; 255
-  d4:	84 b9       	out	0x04, r24	; 4
+  e4:	8f ef       	ldi	r24, 0xFF	; 255
+  e6:	84 b9       	out	0x04, r24	; 4
 	PORTB = 0x00; // 0v en cada pin.
-  d6:	15 b8       	out	0x05, r1	; 5
+  e8:	15 b8       	out	0x05, r1	; 5
 	
 	DDRD = 0xFF; // 7seg
-  d8:	8a b9       	out	0x0a, r24	; 10
+  ea:	8a b9       	out	0x0a, r24	; 10
 	PORTD = 0x00; // 0v en cada pin
-  da:	1b b8       	out	0x0b, r1	; 11
+  ec:	1b b8       	out	0x0b, r1	; 11
 	
 	DDRC = 0x00; // Botones de entradas 
-  dc:	17 b8       	out	0x07, r1	; 7
+  ee:	17 b8       	out	0x07, r1	; 7
 	PORTC = 0xFF; //Pull-Up habilitado 
-  de:	88 b9       	out	0x08, r24	; 8
+  f0:	88 b9       	out	0x08, r24	; 8
 	
 	UCSR0B = 0x00; //apagamos los leds del nano
-  e0:	10 92 c1 00 	sts	0x00C1, r1	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7f80c1>
+  f2:	10 92 c1 00 	sts	0x00C1, r1	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7f80c1>
 	PCMSK1 |= (1<<PCINT8);// inicialmente solo queremos pinchange en el boton de iniciar, para que antes de iniciar los demas botones no produzcan ningun cambio, al terminar de contar los 5 seg se debe de encender el pinchange de los demas botones y apagar el de iniciar mientras que se este jugando. 
-  e4:	ec e6       	ldi	r30, 0x6C	; 108
-  e6:	f0 e0       	ldi	r31, 0x00	; 0
-  e8:	80 81       	ld	r24, Z
-  ea:	81 60       	ori	r24, 0x01	; 1
-  ec:	80 83       	st	Z, r24
-	PCICR |= (1<<PCIE1); //Pinchange enable para el puerto C.
-  ee:	e8 e6       	ldi	r30, 0x68	; 104
-  f0:	f0 e0       	ldi	r31, 0x00	; 0
-  f2:	80 81       	ld	r24, Z
-  f4:	82 60       	ori	r24, 0x02	; 2
-  f6:	80 83       	st	Z, r24
-	CLKPR = (1<<CLKPCE) ; // Cambios en el preescaler
-  f8:	e1 e6       	ldi	r30, 0x61	; 97
-  fa:	f0 e0       	ldi	r31, 0x00	; 0
-  fc:	80 e8       	ldi	r24, 0x80	; 128
+  f6:	ec e6       	ldi	r30, 0x6C	; 108
+  f8:	f0 e0       	ldi	r31, 0x00	; 0
+  fa:	80 81       	ld	r24, Z
+  fc:	81 60       	ori	r24, 0x01	; 1
   fe:	80 83       	st	Z, r24
+	PCICR |= (1<<PCIE1); //Pinchange enable para el puerto C.
+ 100:	e8 e6       	ldi	r30, 0x68	; 104
+ 102:	f0 e0       	ldi	r31, 0x00	; 0
+ 104:	80 81       	ld	r24, Z
+ 106:	82 60       	ori	r24, 0x02	; 2
+ 108:	80 83       	st	Z, r24
+	CLKPR = (1<<CLKPCE) ; // Cambios en el preescaler
+ 10a:	e1 e6       	ldi	r30, 0x61	; 97
+ 10c:	f0 e0       	ldi	r31, 0x00	; 0
+ 10e:	80 e8       	ldi	r24, 0x80	; 128
+ 110:	80 83       	st	Z, r24
 	CLKPR = (1<<CLKPS2); //1MHz
- 100:	84 e0       	ldi	r24, 0x04	; 4
- 102:	80 83       	st	Z, r24
+ 112:	84 e0       	ldi	r24, 0x04	; 4
+ 114:	80 83       	st	Z, r24
 	initimr0();
- 104:	0e 94 61 00 	call	0xc2	; 0xc2 <initimr0>
+ 116:	0e 94 6a 00 	call	0xd4	; 0xd4 <initimr0>
 	initmr1(); //Iniciamos timer 1 para contar segundos cuando el botonaso lo diga
- 108:	0e 94 53 00 	call	0xa6	; 0xa6 <initmr1>
+ 11a:	0e 94 5c 00 	call	0xb8	; 0xb8 <initmr1>
 	
 	sei();	
- 10c:	78 94       	sei
- 10e:	08 95       	ret
+ 11e:	78 94       	sei
+ 120:	08 95       	ret
 
-00000110 <main>:
+00000122 <main>:
 void initmr1();
 /****************************************/
 // Main Function
 int main(void)
 {
 	setup();
- 110:	0e 94 68 00 	call	0xd0	; 0xd0 <setup>
+ 122:	0e 94 71 00 	call	0xe2	; 0xe2 <setup>
 	while(1)
 	{
 		switch (iniciar)
- 114:	80 91 2d 01 	lds	r24, 0x012D	; 0x80012d <iniciar>
- 118:	88 23       	and	r24, r24
- 11a:	19 f0       	breq	.+6      	; 0x122 <main+0x12>
- 11c:	81 30       	cpi	r24, 0x01	; 1
- 11e:	59 f0       	breq	.+22     	; 0x136 <main+0x26>
- 120:	f9 cf       	rjmp	.-14     	; 0x114 <main+0x4>
+ 126:	80 91 2d 01 	lds	r24, 0x012D	; 0x80012d <iniciar>
+ 12a:	88 23       	and	r24, r24
+ 12c:	19 f0       	breq	.+6      	; 0x134 <main+0x12>
+ 12e:	81 30       	cpi	r24, 0x01	; 1
+ 130:	31 f0       	breq	.+12     	; 0x13e <main+0x1c>
+ 132:	f9 cf       	rjmp	.-14     	; 0x126 <main+0x4>
 		{
 			case 0:
-			PORTD = lista7seg[seg7];// a la espera de iniciar o a que termine de contar
- 122:	e0 91 2a 01 	lds	r30, 0x012A	; 0x80012a <seg7>
- 126:	f0 e0       	ldi	r31, 0x00	; 0
- 128:	ee 0f       	add	r30, r30
- 12a:	ff 1f       	adc	r31, r31
- 12c:	e6 5f       	subi	r30, 0xF6	; 246
- 12e:	fe 4f       	sbci	r31, 0xFE	; 254
- 130:	80 81       	ld	r24, Z
- 132:	8b b9       	out	0x0b, r24	; 11
+			mostrar_numero(seg7);// a la espera de iniciar o a que termine de contar
+ 134:	80 91 2a 01 	lds	r24, 0x012A	; 0x80012a <seg7>
+ 138:	0e 94 53 00 	call	0xa6	; 0xa6 <mostrar_numero>
 			break;
- 134:	ef cf       	rjmp	.-34     	; 0x114 <main+0x4>
+ 13c:	f4 cf       	rjmp	.-24     	; 0x126 <main+0x4>
 			case 1:
 			 //Juego de botones 2 jugadores 
 			 if (contador1>=4)
- 136:	80 91 2f 01 	lds	r24, 0x012F	; 0x80012f <contador1>
- 13a:	84 30       	cpi	r24, 0x04	; 4
- 13c:	78 f0       	brcs	.+30     	; 0x15c <main+0x4c>
+ 13e:	80 91 2f 01 	lds	r24, 0x012F	; 0x80012f <contador1>
+ 142:	84 30       	cpi	r24, 0x04	; 4
+ 144:	78 f0       	brcs	.+30     	; 0x164 <main+0x42>
 			 {
 				 PCMSK1=0; //quitamos las interrupciones del pinchange
- 13e:	ec e6       	ldi	r30, 0x6C	; 108
- 140:	f0 e0       	ldi	r31, 0x00	; 0
- 142:	10 82       	st	Z, r1
+ 146:	ec e6       	ldi	r30, 0x6C	; 108
+ 148:	f0 e0       	ldi	r31, 0x00	; 0
+ 14a:	10 82       	st	Z, r1
 				 PCMSK1 |=  (1<<PCINT8); //Habilitamos nuevamente el boton de iniciar.
- 144:	80 81       	ld	r24, Z
- 146:	81 60       	ori	r24, 0x01	; 1
- 148:	80 83       	st	Z, r24
+ 14c:	80 81       	ld	r24, Z
+ 14e:	81 60       	ori	r24, 0x01	; 1
+ 150:	80 83       	st	Z, r24
 				 PORTD &= ~(1<<PORTD7); //apagamos al jugador 2
- 14a:	8b b1       	in	r24, 0x0b	; 11
- 14c:	8f 77       	andi	r24, 0x7F	; 127
- 14e:	8b b9       	out	0x0b, r24	; 11
-				 PORTD = lista7seg[1];// mostramos 1 en el 7 seg
- 150:	80 91 0c 01 	lds	r24, 0x010C	; 0x80010c <lista7seg+0x2>
- 154:	8b b9       	out	0x0b, r24	; 11
+ 152:	8b b1       	in	r24, 0x0b	; 11
+ 154:	8f 77       	andi	r24, 0x7F	; 127
+ 156:	8b b9       	out	0x0b, r24	; 11
+				 mostrar_numero(1);// mostramos 1 en el 7 seg
+ 158:	81 e0       	ldi	r24, 0x01	; 1
+ 15a:	0e 94 53 00 	call	0xa6	; 0xa6 <mostrar_numero>
 				 PORTB = 0x1F; //encendemos los 4 leds y el transitor en PB4
- 156:	8f e1       	ldi	r24, 0x1F	; 31
- 158:	85 b9       	out	0x05, r24	; 5
- 15a:	dc cf       	rjmp	.-72     	; 0x114 <main+0x4>
+ 15e:	8f e1       	ldi	r24, 0x1F	; 31
+ 160:	85 b9       	out	0x05, r24	; 5
+ 162:	e1 cf       	rjmp	.-62     	; 0x126 <main+0x4>
 			 }
 			 else if (contador2>=4)
- 15c:	80 91 2e 01 	lds	r24, 0x012E	; 0x80012e <contador2>
- 160:	84 30       	cpi	r24, 0x04	; 4
- 162:	88 f0       	brcs	.+34     	; 0x186 <main+0x76>
+ 164:	80 91 2e 01 	lds	r24, 0x012E	; 0x80012e <contador2>
+ 168:	84 30       	cpi	r24, 0x04	; 4
+ 16a:	88 f0       	brcs	.+34     	; 0x18e <main+0x6c>
 			 {
 				 PCMSK1=0; //quitamos las interrupciones del pinchange
- 164:	ec e6       	ldi	r30, 0x6C	; 108
- 166:	f0 e0       	ldi	r31, 0x00	; 0
- 168:	10 82       	st	Z, r1
+ 16c:	ec e6       	ldi	r30, 0x6C	; 108
+ 16e:	f0 e0       	ldi	r31, 0x00	; 0
+ 170:	10 82       	st	Z, r1
 				 PCMSK1 |=  (1<<PCINT8); //Habilitamos nuevamente el boton de iniciar.
- 16a:	80 81       	ld	r24, Z
- 16c:	81 60       	ori	r24, 0x01	; 1
- 16e:	80 83       	st	Z, r24
+ 172:	80 81       	ld	r24, Z
+ 174:	81 60       	ori	r24, 0x01	; 1
+ 176:	80 83       	st	Z, r24
 				 PORTB = 0 ;//apagamos al jugador 1
- 170:	15 b8       	out	0x05, r1	; 5
-				 PORTD = lista7seg[2];// mostramos 2 en el 7 seg
- 172:	80 91 0e 01 	lds	r24, 0x010E	; 0x80010e <lista7seg+0x4>
- 176:	8b b9       	out	0x0b, r24	; 11
+ 178:	15 b8       	out	0x05, r1	; 5
+				 mostrar_numero(2);// mostramos 2 en el 7 seg
+ 17a:	82 e0       	ldi	r24, 0x02	; 2
+ 17c:	0e 94 53 00 	call	0xa6	; 0xa6 <mostrar_numero>
 				 PORTB |= 0x0F; //encendemos los 4 leds 
- 178:	85 b1       	in	r24, 0x05	; 5
- 17a:	8f 60       	ori	r24, 0x0F	; 15
- 17c:	85 b9       	out	0x05, r24	; 5
+ 180:	85 b1       	in	r24, 0x05	; 5
+ 182:	8f 60       	ori	r24, 0x0F	; 15
+ 184:	85 b9       	out	0x05, r24	; 5
 				 PORTD |= (1<<PORTD7); //ENCENDEMOS EL TRANSIS J2
- 17e:	8b b1       	in	r24, 0x0b	; 11
- 180:	80 68       	ori	r24, 0x80	; 128
- 182:	8b b9       	out	0x0b, r24	; 11
- 184:	c7 cf       	rjmp	.-114    	; 0x114 <main+0x4>
+ 186:	8b b1       	in	r24, 0x0b	; 11
+ 188:	80 68       	ori	r24, 0x80	; 128
+ 18a:	8b b9       	out	0x0b, r24	; 11
+ 18c:	cc cf       	rjmp	.-104    	; 0x126 <main+0x4>
 			 }
 			 else
 			 {
 				  PORTD &= ~(1<<PORTD7); //Apagamos los leds del J2
- 186:	8b b1       	in	r24, 0x0b	; 11
- 188:	8f 77       	andi	r24, 0x7F	; 127
- 18a:	8b b9       	out	0x0b, r24	; 11
+ 18e:	8b b1       	in	r24, 0x0b	; 11
+ 190:	8f 77       	andi	r24, 0x7F	; 127
+ 192:	8b b9       	out	0x0b, r24	; 11
 				  PORTB= contador[contador1]; //mostramos el primer jugador
- 18c:	e0 91 2f 01 	lds	r30, 0x012F	; 0x80012f <contador1>
- 190:	f0 e0       	ldi	r31, 0x00	; 0
- 192:	ee 0f       	add	r30, r30
- 194:	ff 1f       	adc	r31, r31
- 196:	e0 50       	subi	r30, 0x00	; 0
- 198:	ff 4f       	sbci	r31, 0xFF	; 255
- 19a:	80 81       	ld	r24, Z
- 19c:	85 b9       	out	0x05, r24	; 5
+ 194:	e0 91 2f 01 	lds	r30, 0x012F	; 0x80012f <contador1>
+ 198:	f0 e0       	ldi	r31, 0x00	; 0
+ 19a:	ee 0f       	add	r30, r30
+ 19c:	ff 1f       	adc	r31, r31
+ 19e:	e0 5e       	subi	r30, 0xE0	; 224
+ 1a0:	fe 4f       	sbci	r31, 0xFE	; 254
+ 1a2:	80 81       	ld	r24, Z
+ 1a4:	85 b9       	out	0x05, r24	; 5
 				  PORTB|= (1<<PORTB4);//encendemos los leds de J1 con su transistor
- 19e:	85 b1       	in	r24, 0x05	; 5
- 1a0:	80 61       	ori	r24, 0x10	; 16
- 1a2:	85 b9       	out	0x05, r24	; 5
+ 1a6:	85 b1       	in	r24, 0x05	; 5
+ 1a8:	80 61       	ori	r24, 0x10	; 16
+ 1aa:	85 b9       	out	0x05, r24	; 5
 				  PORTB &= ~(1<<PORTB4); //apago al J1
- 1a4:	85 b1       	in	r24, 0x05	; 5
- 1a6:	8f 7e       	andi	r24, 0xEF	; 239
- 1a8:	85 b9       	out	0x05, r24	; 5
+ 1ac:	85 b1       	in	r24, 0x05	; 5
+ 1ae:	8f 7e       	andi	r24, 0xEF	; 239
+ 1b0:	85 b9       	out	0x05, r24	; 5
 				  PORTB= contador[contador2]; //mostramos el primer jugador
- 1aa:	e0 91 2e 01 	lds	r30, 0x012E	; 0x80012e <contador2>
- 1ae:	f0 e0       	ldi	r31, 0x00	; 0
- 1b0:	ee 0f       	add	r30, r30
- 1b2:	ff 1f       	adc	r31, r31
- 1b4:	e0 50       	subi	r30, 0x00	; 0
- 1b6:	ff 4f       	sbci	r31, 0xFF	; 255
- 1b8:	80 81       	ld	r24, Z
- 1ba:	85 b9       	out	0x05, r24	; 5
+ 1b2:	e0 91 2e 01 	lds	r30, 0x012E	; 0x80012e <contador2>
+ 1b6:	f0 e0       	ldi	r31, 0x00	; 0
+ 1b8:	ee 0f       	add	r30, r30
+ 1ba:	ff 1f       	adc	r31, r31
+ 1bc:	e0 5e       	subi	r30, 0xE0	; 224
+ 1be:	fe 4f       	sbci	r31, 0xFE	; 254
+ 1c0:	80 81       	ld	r24, Z
+ 1c2:	85 b9       	out	0x05, r24	; 5
 				  PORTD|= (1<<PORTD7); //ENCIENDO AL J2
- 1bc:	8b b1       	in	r24, 0x0b	; 11
- 1be:	80 68       	ori	r24, 0x80	; 128
- 1c0:	8b b9       	out	0x0b, r24	; 11
-				  PORTD |= lista7seg[seg7];
- 1c2:	9b b1       	in	r25, 0x0b	; 11
- 1c4:	e0 91 2a 01 	lds	r30, 0x012A	; 0x80012a <seg7>
- 1c8:	f0 e0       	ldi	r31, 0x00	; 0
- 1ca:	ee 0f       	add	r30, r30
- 1cc:	ff 1f       	adc	r31, r31
- 1ce:	e6 5f       	subi	r30, 0xF6	; 246
- 1d0:	fe 4f       	sbci	r31, 0xFE	; 254
- 1d2:	80 81       	ld	r24, Z
- 1d4:	89 2b       	or	r24, r25
- 1d6:	8b b9       	out	0x0b, r24	; 11
- 1d8:	9d cf       	rjmp	.-198    	; 0x114 <main+0x4>
+ 1c4:	8b b1       	in	r24, 0x0b	; 11
+ 1c6:	80 68       	ori	r24, 0x80	; 128
+ 1c8:	8b b9       	out	0x0b, r24	; 11
+				  mostrar_numero(seg7);
+ 1ca:	80 91 2a 01 	lds	r24, 0x012A	; 0x80012a <seg7>
+ 1ce:	0e 94 53 00 	call	0xa6	; 0xa6 <mostrar_numero>
+ 1d2:	a9 cf       	rjmp	.-174    	; 0x126 <main+0x4>
 
-000001da <__vector_4>:
+000001d4 <__vector_4>:
 	TCNT0 = 158;
 }
 /*******************************/
 //Interrupt subroutines
 ISR(PCINT1_vect)
 {
- 1da:	1f 92       	push	r1
- 1dc:	0f 92       	push	r0
- 1de:	0f b6       	in	r0, 0x3f	; 63
- 1e0:	0f 92       	push	r0
- 1e2:	11 24       	eor	r1, r1
- 1e4:	8f 93       	push	r24
+ 1d4:	1f 92       	push	r1
+ 1d6:	0f 92       	push	r0
+ 1d8:	0f b6       	in	r0, 0x3f	; 63
+ 1da:	0f 92       	push	r0
+ 1dc:	11 24       	eor	r1, r1
+ 1de:	8f 93       	push	r24
 	botonesC= PINC; //vemos como estan los botones y en 10 ms veremos nuevamente
- 1e6:	86 b1       	in	r24, 0x06	; 6
- 1e8:	80 93 2c 01 	sts	0x012C, r24	; 0x80012c <__data_end>
+ 1e0:	86 b1       	in	r24, 0x06	; 6
+ 1e2:	80 93 2c 01 	sts	0x012C, r24	; 0x80012c <__data_end>
 	TIFR0 |= (1<<TOV0); //limpiamos la bandera de Overflow 
- 1ec:	85 b3       	in	r24, 0x15	; 21
- 1ee:	81 60       	ori	r24, 0x01	; 1
- 1f0:	85 bb       	out	0x15, r24	; 21
+ 1e6:	85 b3       	in	r24, 0x15	; 21
+ 1e8:	81 60       	ori	r24, 0x01	; 1
+ 1ea:	85 bb       	out	0x15, r24	; 21
 	TCNT0=158; //decimos que empiece a contar desde 158
- 1f2:	8e e9       	ldi	r24, 0x9E	; 158
- 1f4:	86 bd       	out	0x26, r24	; 38
+ 1ec:	8e e9       	ldi	r24, 0x9E	; 158
+ 1ee:	86 bd       	out	0x26, r24	; 38
 	TIMSK0= (1<<TOIE0); //habilitamos la interrupcción
- 1f6:	81 e0       	ldi	r24, 0x01	; 1
- 1f8:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <__TEXT_REGION_LENGTH__+0x7f806e>
+ 1f0:	81 e0       	ldi	r24, 0x01	; 1
+ 1f2:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <__TEXT_REGION_LENGTH__+0x7f806e>
 }
- 1fc:	8f 91       	pop	r24
- 1fe:	0f 90       	pop	r0
- 200:	0f be       	out	0x3f, r0	; 63
- 202:	0f 90       	pop	r0
- 204:	1f 90       	pop	r1
- 206:	18 95       	reti
+ 1f6:	8f 91       	pop	r24
+ 1f8:	0f 90       	pop	r0
+ 1fa:	0f be       	out	0x3f, r0	; 63
+ 1fc:	0f 90       	pop	r0
+ 1fe:	1f 90       	pop	r1
+ 200:	18 95       	reti
 
-00000208 <__vector_16>:
+00000202 <__vector_16>:
 
 ISR(TIMER0_OVF_vect) //occurre la interrupción
 {	
- 208:	1f 92       	push	r1
- 20a:	0f 92       	push	r0
- 20c:	0f b6       	in	r0, 0x3f	; 63
- 20e:	0f 92       	push	r0
- 210:	11 24       	eor	r1, r1
- 212:	8f 93       	push	r24
- 214:	9f 93       	push	r25
+ 202:	1f 92       	push	r1
+ 204:	0f 92       	push	r0
+ 206:	0f b6       	in	r0, 0x3f	; 63
+ 208:	0f 92       	push	r0
+ 20a:	11 24       	eor	r1, r1
+ 20c:	8f 93       	push	r24
+ 20e:	9f 93       	push	r25
+ 210:	ef 93       	push	r30
+ 212:	ff 93       	push	r31
 	TIMSK0=0; //apagamos las interrupciones del timer 0
- 216:	10 92 6e 00 	sts	0x006E, r1	; 0x80006e <__TEXT_REGION_LENGTH__+0x7f806e>
+ 214:	10 92 6e 00 	sts	0x006E, r1	; 0x80006e <__TEXT_REGION_LENGTH__+0x7f806e>
 	uint8_t botonest0 = PINC; //vemos nuevamente como estan los botones apachado/no apachados
- 21a:	86 b1       	in	r24, 0x06	; 6
+ 218:	86 b1       	in	r24, 0x06	; 6
 	if (botonesC == botonest0)	//estan igual que antes??
- 21c:	90 91 2c 01 	lds	r25, 0x012C	; 0x80012c <__data_end>
- 220:	89 13       	cpse	r24, r25
- 222:	27 c0       	rjmp	.+78     	; 0x272 <__vector_16+0x6a>
+ 21a:	90 91 2c 01 	lds	r25, 0x012C	; 0x80012c <__data_end>
+ 21e:	89 13       	cpse	r24, r25
+ 220:	2c c0       	rjmp	.+88     	; 0x27a <__vector_16+0x78>
 	{		
 		uint8_t start = botonest0 & (0b00000001); //por si acaso matamos todos los demás bits de Puerto C 
 		if(start != 0b00000001)	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0. 	
- 224:	80 fd       	sbrc	r24, 0
- 226:	17 c0       	rjmp	.+46     	; 0x256 <__vector_16+0x4e>
+ 222:	80 fd       	sbrc	r24, 0
+ 224:	1c c0       	rjmp	.+56     	; 0x25e <__vector_16+0x5c>
 		{
+			PCMSK1 &= ~(1<<PCINT8);
+ 226:	ec e6       	ldi	r30, 0x6C	; 108
+ 228:	f0 e0       	ldi	r31, 0x00	; 0
+ 22a:	90 81       	ld	r25, Z
+ 22c:	9e 7f       	andi	r25, 0xFE	; 254
+ 22e:	90 83       	st	Z, r25
 			contador1=0;//REINICIAMOS CONTADORES
- 228:	10 92 2f 01 	sts	0x012F, r1	; 0x80012f <contador1>
+ 230:	10 92 2f 01 	sts	0x012F, r1	; 0x80012f <contador1>
 			contador2=0;
- 22c:	10 92 2e 01 	sts	0x012E, r1	; 0x80012e <contador2>
+ 234:	10 92 2e 01 	sts	0x012E, r1	; 0x80012e <contador2>
 			iniciar=0; //Reiniciamos estado
- 230:	10 92 2d 01 	sts	0x012D, r1	; 0x80012d <iniciar>
+ 238:	10 92 2d 01 	sts	0x012D, r1	; 0x80012d <iniciar>
 			seg7=5;
- 234:	95 e0       	ldi	r25, 0x05	; 5
- 236:	90 93 2a 01 	sts	0x012A, r25	; 0x80012a <seg7>
+ 23c:	95 e0       	ldi	r25, 0x05	; 5
+ 23e:	90 93 2a 01 	sts	0x012A, r25	; 0x80012a <seg7>
 			PORTB=0;
- 23a:	15 b8       	out	0x05, r1	; 5
+ 242:	15 b8       	out	0x05, r1	; 5
 			PORTD=0;
- 23c:	1b b8       	out	0x0b, r1	; 11
+ 244:	1b b8       	out	0x0b, r1	; 11
 			TIFR1 |= (1<<TOV1); // limpiamos la bandera de overflow
- 23e:	96 b3       	in	r25, 0x16	; 22
- 240:	91 60       	ori	r25, 0x01	; 1
- 242:	96 bb       	out	0x16, r25	; 22
+ 246:	96 b3       	in	r25, 0x16	; 22
+ 248:	91 60       	ori	r25, 0x01	; 1
+ 24a:	96 bb       	out	0x16, r25	; 22
 			TCNT1H = 0xC2;
- 244:	92 ec       	ldi	r25, 0xC2	; 194
- 246:	90 93 85 00 	sts	0x0085, r25	; 0x800085 <__TEXT_REGION_LENGTH__+0x7f8085>
+ 24c:	92 ec       	ldi	r25, 0xC2	; 194
+ 24e:	90 93 85 00 	sts	0x0085, r25	; 0x800085 <__TEXT_REGION_LENGTH__+0x7f8085>
 			TCNT1L= 0xF7; //contara de 0xC2F7 a 0xFFFF
- 24a:	97 ef       	ldi	r25, 0xF7	; 247
- 24c:	90 93 84 00 	sts	0x0084, r25	; 0x800084 <__TEXT_REGION_LENGTH__+0x7f8084>
+ 252:	97 ef       	ldi	r25, 0xF7	; 247
+ 254:	90 93 84 00 	sts	0x0084, r25	; 0x800084 <__TEXT_REGION_LENGTH__+0x7f8084>
 			TIMSK1= (1<<TOIE1); //habilite la interrupción del contador de segundos
- 250:	91 e0       	ldi	r25, 0x01	; 1
- 252:	90 93 6f 00 	sts	0x006F, r25	; 0x80006f <__TEXT_REGION_LENGTH__+0x7f806f>
+ 258:	91 e0       	ldi	r25, 0x01	; 1
+ 25a:	90 93 6f 00 	sts	0x006F, r25	; 0x80006f <__TEXT_REGION_LENGTH__+0x7f806f>
 			
 		}
 		uint8_t incj1 = botonest0 & (0b00000010);
 		if(incj1 != 0b00000010) //se apacho el inc1
- 256:	81 fd       	sbrc	r24, 1
- 258:	05 c0       	rjmp	.+10     	; 0x264 <__vector_16+0x5c>
+ 25e:	81 fd       	sbrc	r24, 1
+ 260:	05 c0       	rjmp	.+10     	; 0x26c <__vector_16+0x6a>
 		{
 			contador1++; 
- 25a:	90 91 2f 01 	lds	r25, 0x012F	; 0x80012f <contador1>
- 25e:	9f 5f       	subi	r25, 0xFF	; 255
- 260:	90 93 2f 01 	sts	0x012F, r25	; 0x80012f <contador1>
+ 262:	90 91 2f 01 	lds	r25, 0x012F	; 0x80012f <contador1>
+ 266:	9f 5f       	subi	r25, 0xFF	; 255
+ 268:	90 93 2f 01 	sts	0x012F, r25	; 0x80012f <contador1>
 		}
 		uint8_t incj2 = botonest0 & (0b00000100);
 		if(incj2 != 0b00000100) //se apacho el inc2
- 264:	82 fd       	sbrc	r24, 2
- 266:	05 c0       	rjmp	.+10     	; 0x272 <__vector_16+0x6a>
+ 26c:	82 fd       	sbrc	r24, 2
+ 26e:	05 c0       	rjmp	.+10     	; 0x27a <__vector_16+0x78>
 		{
 			contador2++;
- 268:	80 91 2e 01 	lds	r24, 0x012E	; 0x80012e <contador2>
- 26c:	8f 5f       	subi	r24, 0xFF	; 255
- 26e:	80 93 2e 01 	sts	0x012E, r24	; 0x80012e <contador2>
+ 270:	80 91 2e 01 	lds	r24, 0x012E	; 0x80012e <contador2>
+ 274:	8f 5f       	subi	r24, 0xFF	; 255
+ 276:	80 93 2e 01 	sts	0x012E, r24	; 0x80012e <contador2>
 		}
 		 		
 	}
 }
- 272:	9f 91       	pop	r25
- 274:	8f 91       	pop	r24
- 276:	0f 90       	pop	r0
- 278:	0f be       	out	0x3f, r0	; 63
- 27a:	0f 90       	pop	r0
- 27c:	1f 90       	pop	r1
- 27e:	18 95       	reti
+ 27a:	ff 91       	pop	r31
+ 27c:	ef 91       	pop	r30
+ 27e:	9f 91       	pop	r25
+ 280:	8f 91       	pop	r24
+ 282:	0f 90       	pop	r0
+ 284:	0f be       	out	0x3f, r0	; 63
+ 286:	0f 90       	pop	r0
+ 288:	1f 90       	pop	r1
+ 28a:	18 95       	reti
 
-00000280 <__vector_13>:
+0000028c <__vector_13>:
 ISR(TIMER1_OVF_vect)
 {
- 280:	1f 92       	push	r1
- 282:	0f 92       	push	r0
- 284:	0f b6       	in	r0, 0x3f	; 63
- 286:	0f 92       	push	r0
- 288:	11 24       	eor	r1, r1
- 28a:	8f 93       	push	r24
- 28c:	ef 93       	push	r30
- 28e:	ff 93       	push	r31
+ 28c:	1f 92       	push	r1
+ 28e:	0f 92       	push	r0
+ 290:	0f b6       	in	r0, 0x3f	; 63
+ 292:	0f 92       	push	r0
+ 294:	11 24       	eor	r1, r1
+ 296:	8f 93       	push	r24
+ 298:	ef 93       	push	r30
+ 29a:	ff 93       	push	r31
 	seg7--;	
- 290:	80 91 2a 01 	lds	r24, 0x012A	; 0x80012a <seg7>
- 294:	81 50       	subi	r24, 0x01	; 1
- 296:	80 93 2a 01 	sts	0x012A, r24	; 0x80012a <seg7>
+ 29c:	80 91 2a 01 	lds	r24, 0x012A	; 0x80012a <seg7>
+ 2a0:	81 50       	subi	r24, 0x01	; 1
+ 2a2:	80 93 2a 01 	sts	0x012A, r24	; 0x80012a <seg7>
 	TCNT1H = 0xC2;
- 29a:	82 ec       	ldi	r24, 0xC2	; 194
- 29c:	80 93 85 00 	sts	0x0085, r24	; 0x800085 <__TEXT_REGION_LENGTH__+0x7f8085>
+ 2a6:	82 ec       	ldi	r24, 0xC2	; 194
+ 2a8:	80 93 85 00 	sts	0x0085, r24	; 0x800085 <__TEXT_REGION_LENGTH__+0x7f8085>
 	TCNT1L= 0xF7; //contara de 0xC2F7 a 0xFFFF
- 2a0:	87 ef       	ldi	r24, 0xF7	; 247
- 2a2:	80 93 84 00 	sts	0x0084, r24	; 0x800084 <__TEXT_REGION_LENGTH__+0x7f8084>
+ 2ac:	87 ef       	ldi	r24, 0xF7	; 247
+ 2ae:	80 93 84 00 	sts	0x0084, r24	; 0x800084 <__TEXT_REGION_LENGTH__+0x7f8084>
 	if (seg7==0)
- 2a6:	80 91 2a 01 	lds	r24, 0x012A	; 0x80012a <seg7>
- 2aa:	81 11       	cpse	r24, r1
- 2ac:	0d c0       	rjmp	.+26     	; 0x2c8 <__vector_13+0x48>
+ 2b2:	80 91 2a 01 	lds	r24, 0x012A	; 0x80012a <seg7>
+ 2b6:	81 11       	cpse	r24, r1
+ 2b8:	0a c0       	rjmp	.+20     	; 0x2ce <__vector_13+0x42>
 	{	
 		iniciar=1;
- 2ae:	81 e0       	ldi	r24, 0x01	; 1
- 2b0:	80 93 2d 01 	sts	0x012D, r24	; 0x80012d <iniciar>
+ 2ba:	81 e0       	ldi	r24, 0x01	; 1
+ 2bc:	80 93 2d 01 	sts	0x012D, r24	; 0x80012d <iniciar>
 		TIMSK1= 0;
- 2b4:	10 92 6f 00 	sts	0x006F, r1	; 0x80006f <__TEXT_REGION_LENGTH__+0x7f806f>
-		PCMSK1 &= ~(1<<PCINT8);//deshabilitamos el boton de iniciar juego durante juegan
- 2b8:	ec e6       	ldi	r30, 0x6C	; 108
- 2ba:	f0 e0       	ldi	r31, 0x00	; 0
- 2bc:	80 81       	ld	r24, Z
- 2be:	8e 7f       	andi	r24, 0xFE	; 254
- 2c0:	80 83       	st	Z, r24
+ 2c0:	10 92 6f 00 	sts	0x006F, r1	; 0x80006f <__TEXT_REGION_LENGTH__+0x7f806f>
+		//deshabilitamos el boton de iniciar juego durante juegan
 		PCMSK1 |= (1<<PCINT9)|(1<<PCINT10); //habilitamos los botones de jugar con pinchange
- 2c2:	80 81       	ld	r24, Z
- 2c4:	86 60       	ori	r24, 0x06	; 6
- 2c6:	80 83       	st	Z, r24
+ 2c4:	ec e6       	ldi	r30, 0x6C	; 108
+ 2c6:	f0 e0       	ldi	r31, 0x00	; 0
+ 2c8:	80 81       	ld	r24, Z
+ 2ca:	86 60       	ori	r24, 0x06	; 6
+ 2cc:	80 83       	st	Z, r24
 		
 	} 
- 2c8:	ff 91       	pop	r31
- 2ca:	ef 91       	pop	r30
- 2cc:	8f 91       	pop	r24
- 2ce:	0f 90       	pop	r0
- 2d0:	0f be       	out	0x3f, r0	; 63
- 2d2:	0f 90       	pop	r0
- 2d4:	1f 90       	pop	r1
- 2d6:	18 95       	reti
+ 2ce:	ff 91       	pop	r31
+ 2d0:	ef 91       	pop	r30
+ 2d2:	8f 91       	pop	r24
+ 2d4:	0f 90       	pop	r0
+ 2d6:	0f be       	out	0x3f, r0	; 63
+ 2d8:	0f 90       	pop	r0
+ 2da:	1f 90       	pop	r1
+ 2dc:	18 95       	reti
 
-000002d8 <_exit>:
- 2d8:	f8 94       	cli
+000002de <_exit>:
+ 2de:	f8 94       	cli
 
-000002da <__stop_program>:
- 2da:	ff cf       	rjmp	.-2      	; 0x2da <__stop_program>
+000002e0 <__stop_program>:
+ 2e0:	ff cf       	rjmp	.-2      	; 0x2e0 <__stop_program>

@@ -120,10 +120,10 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="7segmentos\7segmentos.c">
+    <Compile Include="7segmentos\segmentos.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="7segmentos\7segmentos.h">
+    <Compile Include="7segmentos\segmentos.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">

@@ -10,7 +10,8 @@
 #define F_CPU 16000000
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "7segmentos/7segmentos.h"
+#include "7segmentos/segmentos.h"
+
 uint8_t contador1=0;
 uint8_t contador2= 0;
 uint8_t seg7=5;
@@ -32,7 +33,7 @@ int main(void)
 		switch (iniciar)
 		{
 			case 0:
-			PORTD = mostrar_numero(seg7);// a la espera de iniciar o a que termine de contar
+			mostrar_numero(seg7);// a la espera de iniciar o a que termine de contar
 			break;
 			case 1:
 			 //Juego de botones 2 jugadores 
@@ -41,7 +42,7 @@ int main(void)
 				 PCMSK1=0; //quitamos las interrupciones del pinchange
 				 PCMSK1 |=  (1<<PCINT8); //Habilitamos nuevamente el boton de iniciar.
 				 PORTD &= ~(1<<PORTD7); //apagamos al jugador 2
-				 PORTD = mostrar_numero(1);// mostramos 1 en el 7 seg
+				 mostrar_numero(1);// mostramos 1 en el 7 seg
 				 PORTB = 0x1F; //encendemos los 4 leds y el transitor en PB4
 			 }
 			 else if (contador2>=4)
@@ -49,7 +50,7 @@ int main(void)
 				 PCMSK1=0; //quitamos las interrupciones del pinchange
 				 PCMSK1 |=  (1<<PCINT8); //Habilitamos nuevamente el boton de iniciar.
 				 PORTB = 0 ;//apagamos al jugador 1
-				 PORTD = mostrar_numero(2);// mostramos 2 en el 7 seg
+				 mostrar_numero(2);// mostramos 2 en el 7 seg
 				 PORTB |= 0x0F; //encendemos los 4 leds 
 				 PORTD |= (1<<PORTD7); //ENCENDEMOS EL TRANSIS J2
 			 }
@@ -61,7 +62,7 @@ int main(void)
 				  PORTB &= ~(1<<PORTB4); //apago al J1
 				  PORTB= contador[contador2]; //mostramos el primer jugador
 				  PORTD|= (1<<PORTD7); //ENCIENDO AL J2
-				  PORTD |= mostrar_numero(seg7);
+				  mostrar_numero(seg7);
 			 }
 			break;
 		}
@@ -127,6 +128,7 @@ ISR(TIMER0_OVF_vect) //occurre la interrupción
 		uint8_t start = botonest0 & (0b00000001); //por si acaso matamos todos los demás bits de Puerto C 
 		if(start != 0b00000001)	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0. 	
 		{
+			PCMSK1 &= ~(1<<PCINT8);
 			contador1=0;//REINICIAMOS CONTADORES
 			contador2=0;
 			iniciar=0; //Reiniciamos estado
@@ -161,7 +163,7 @@ ISR(TIMER1_OVF_vect)
 	{	
 		iniciar=1;
 		TIMSK1= 0;
-		PCMSK1 &= ~(1<<PCINT8);//deshabilitamos el boton de iniciar juego durante juegan
+		//deshabilitamos el boton de iniciar juego durante juegan
 		PCMSK1 |= (1<<PCINT9)|(1<<PCINT10); //habilitamos los botones de jugar con pinchange
 		
 	} 
