@@ -151,8 +151,8 @@ void initimr0()
   d6:	85 b5       	in	r24, 0x25	; 37
   d8:	85 60       	ori	r24, 0x05	; 5
   da:	85 bd       	out	0x25, r24	; 37
-	TCNT0 = 158;
-  dc:	8e e9       	ldi	r24, 0x9E	; 158
+	TCNT0 = 207; //207 para 0.05 seg
+  dc:	8f ec       	ldi	r24, 0xCF	; 207
   de:	86 bd       	out	0x26, r24	; 38
   e0:	08 95       	ret
 
@@ -332,7 +332,7 @@ int main(void)
  1d2:	a9 cf       	rjmp	.-174    	; 0x126 <main+0x4>
 
 000001d4 <__vector_4>:
-	TCNT0 = 158;
+	TCNT0 = 207; //207 para 0.05 seg
 }
 /*******************************/
 //Interrupt subroutines
@@ -351,8 +351,8 @@ ISR(PCINT1_vect)
  1e6:	85 b3       	in	r24, 0x15	; 21
  1e8:	81 60       	ori	r24, 0x01	; 1
  1ea:	85 bb       	out	0x15, r24	; 21
-	TCNT0=158; //decimos que empiece a contar desde 158
- 1ec:	8e e9       	ldi	r24, 0x9E	; 158
+	TCNT0=207; //decimos que empiece a contar desde 207
+ 1ec:	8f ec       	ldi	r24, 0xCF	; 207
  1ee:	86 bd       	out	0x26, r24	; 38
 	TIMSK0= (1<<TOIE0); //habilitamos la interrupcción
  1f0:	81 e0       	ldi	r24, 0x01	; 1

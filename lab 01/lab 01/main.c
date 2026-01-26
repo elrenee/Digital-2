@@ -107,7 +107,7 @@ void initimr0()
 {	
 	TCCR0A=0;	
 	TCCR0B |= (1<<CS02)|(1<<CS00);	//prescaler del timer de 1024
-	TCNT0 = 158;
+	TCNT0 = 207; //207 para 0.05 seg
 }
 /*******************************/
 //Interrupt subroutines
@@ -115,7 +115,7 @@ ISR(PCINT1_vect)
 {
 	botonesC= PINC; //vemos como estan los botones y en 10 ms veremos nuevamente
 	TIFR0 |= (1<<TOV0); //limpiamos la bandera de Overflow 
-	TCNT0=158; //decimos que empiece a contar desde 158
+	TCNT0=207; //decimos que empiece a contar desde 207
 	TIMSK0= (1<<TOIE0); //habilitamos la interrupcción
 }
 
