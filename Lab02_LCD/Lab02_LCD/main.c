@@ -10,7 +10,9 @@
 // Encabezado (Libraries)
 #define F_CPU 16000000
 #include <avr/io.h>
+#include <util/delay.h>
 #include <avr/interrupt.h>
+#include "PantallasLCD/LCD.h"
 
 /****************************************/
 // Function prototypes
@@ -21,6 +23,11 @@ void setup();
 int main(void)
 {
 	setup();
+	LCDcaracter('O');
+	LCDcaracter('O');
+	LCDsetcursor(1,2);
+	LCDcaracter('A');
+	LCDstring("jorch petenero");
 	while(1)
 	{
 		
@@ -32,7 +39,8 @@ int main(void)
 void setup()
 {
 	cli();
-	
+	initLCD8bits();
+	LCDsetcursor(1,1);
 	sei();
 }
 
