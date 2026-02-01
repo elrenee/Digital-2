@@ -8,3 +8,5 @@ PantallasLCD\LCD.c
 
 main.c
 
+Uart\Serial.c
+

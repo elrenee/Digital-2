@@ -15,13 +15,19 @@
 #include <stdlib.h>
 #include "PantallasLCD/LCD.h"
 #include "Convertidor/ADC.h"
+#include "Uart/Serial.h"
+
 int adcleido=0;
-uint8_t lectura =1;
+int RXUart=0;
+char cereal =0; //recibira la comunicación serial
+uint8_t contador=0; //valor cambiara dependiendo la comunicación serial
+uint8_t lectura =1;//indice de que canal adc se lee
 uint8_t valor1= 0; //de 0 a 255
 uint16_t valor2=0; //lectura 2, de 0 a 1023
 float voltaje1=0;
 char buffer[10];
-char buffer2[10];
+char buffer2[10];//Buffer para convertir a string el adc de 0 a 1023
+char buffer3[10];//Buffer para convertir a string el contador de la comunicación serial
 /****************************************/
 // Function prototypes
 void setup();
@@ -31,9 +37,13 @@ void setup();
 int main(void)
 {
 	setup();
+	writecadena("Presione + para aumentar y - para decrementar :)\n");
 	LCDstring("S1:");
 	LCDsetcursor(8,1);
 	LCDstring("S2");
+	LCDsetcursor(13,1);
+	LCDstring("S3");
+	
 	while(1)
 	{
 		while (adcleido==1)//creo que no es necesario pero esto hara entrar a cambiar los valores desplegados en la LCD solo si hay lectura de ADC 
@@ -45,7 +55,7 @@ int main(void)
 				dtostrf(voltaje1, 4, 2, buffer);
 				LCDstring(buffer);// escribo el valor en cadena
 				LCDcaracter('V');
-				ADMUX |= (1<<MUX0); //Cambiamos canal de lectura a Canal 1 del adc
+				ADMUX &= ~(1<<MUX0); //Cambiamos canal de lectura a Canal 0 del adc
 				lectura=2; // que pot leere en la proxima conversion?
 				ADCSRA |=(1<<ADSC);
 			}else if (lectura==2)
@@ -53,11 +63,29 @@ int main(void)
 				LCDsetcursor(7,2);
 				dtostrf(valor2, 4 ,0,buffer2);
 				LCDstring(buffer2);
-				ADMUX &= ~(1<<MUX0); //canal 0 seleccionado
+				ADMUX |= (1<<MUX0); //canal 1 seleccionado
 				lectura=1; //prox lectura sera en el 1
 				ADCSRA |= (1<<ADSC);
 			}
 			adcleido=0;
+		}
+		while(RXUart==1)
+		{
+			LCDsetcursor(12,2);
+			if (cereal==43)
+			{
+				contador++;
+				
+			}else if (cereal==45)
+			{
+				contador--;
+			}else if ((cereal!=43)&&(cereal!=45))
+			{
+				writecadena("Comando invalido.\n");
+			}
+			dtostrf(contador,4,0,buffer3);
+			LCDstring(buffer3);
+			RXUart=0;
 		}
 	}
 }
@@ -74,6 +102,7 @@ void setup()
 	
 	initADC();
 	ADCSRA |= (1<<ADSC);
+	iniUart();
 	sei();
 }
 
@@ -91,4 +120,10 @@ ISR(ADC_vect)
 	{
 		valor2= ADC>>6; // de 0 a 1023, 10 bits 
 	}
+}
+
+ISR(USART_RX_vect)
+{
+	cereal=UDR0;
+	RXUart=1;
 }
