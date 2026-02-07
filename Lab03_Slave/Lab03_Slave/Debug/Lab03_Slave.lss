@@ -1,0 +1,166 @@
+
+Lab03_Slave.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  00000132  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000000de  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .comment      00000030  00000000  00000000  00000132  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000164  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000068  00000000  00000000  000001a4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000007fc  00000000  00000000  0000020c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000006e9  00000000  00000000  00000a08  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000037f  00000000  00000000  000010f1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  0000007c  00000000  00000000  00001470  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    0000039b  00000000  00000000  000014ec  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000038  00000000  00000000  00001887  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   8:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  10:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  14:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  18:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  1c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  20:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  24:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  28:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  2c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  30:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  34:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  38:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  3c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  40:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  44:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  48:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  4c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  50:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  54:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  58:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  5c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  60:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  64:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+  74:	0e 94 5d 00 	call	0xba	; 0xba <main>
+  78:	0c 94 6d 00 	jmp	0xda	; 0xda <_exit>
+
+0000007c <__bad_interrupt>:
+  7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000080 <initADC>:
+ */ 
+#include "ADC.h"
+
+void initADC(void)
+{
+	CLKPR= (1<<CLKPCE); //Cambios en la frecuencia del sistema
+  80:	e1 e6       	ldi	r30, 0x61	; 97
+  82:	f0 e0       	ldi	r31, 0x00	; 0
+  84:	80 e8       	ldi	r24, 0x80	; 128
+  86:	80 83       	st	Z, r24
+	CLKPR = (1<<CLKPS2); //prescaler de 16 
+  88:	84 e0       	ldi	r24, 0x04	; 4
+  8a:	80 83       	st	Z, r24
+	
+	ADMUX =0;
+  8c:	ec e7       	ldi	r30, 0x7C	; 124
+  8e:	f0 e0       	ldi	r31, 0x00	; 0
+  90:	10 82       	st	Z, r1
+	ADMUX |= (1<<REFS0)|(1<<ADLAR)|(1<<MUX0); //referancia interna, ajustado a la izquierda, canal 1 inicial mente. 
+  92:	80 81       	ld	r24, Z
+  94:	81 66       	ori	r24, 0x61	; 97
+  96:	80 83       	st	Z, r24
+
+	ADCSRA =0;
+  98:	ea e7       	ldi	r30, 0x7A	; 122
+  9a:	f0 e0       	ldi	r31, 0x00	; 0
+  9c:	10 82       	st	Z, r1
+	ADCSRA |= (1<<ADPS0)|(1<<ADPS1)|(1<<ADIE)|(1<<ADEN);
+  9e:	80 81       	ld	r24, Z
+  a0:	8b 68       	ori	r24, 0x8B	; 139
+  a2:	80 83       	st	Z, r24
+  a4:	08 95       	ret
+
+000000a6 <setup>:
+
+/********************************/
+// NON-Interrupt subroutines
+void setup()
+{
+	cli();
+  a6:	f8 94       	cli
+	initSlave();
+  a8:	0e 94 60 00 	call	0xc0	; 0xc0 <initSlave>
+	initADC();
+  ac:	0e 94 40 00 	call	0x80	; 0x80 <initADC>
+	SPCR|= (1<<SPIE);
+  b0:	8c b5       	in	r24, 0x2c	; 44
+  b2:	80 68       	ori	r24, 0x80	; 128
+  b4:	8c bd       	out	0x2c, r24	; 44
+	sei();
+  b6:	78 94       	sei
+  b8:	08 95       	ret
+
+000000ba <main>:
+
+/****************************************/
+// Main Function
+int main(void)
+{
+	setup();
+  ba:	0e 94 53 00 	call	0xa6	; 0xa6 <setup>
+  be:	ff cf       	rjmp	.-2      	; 0xbe <main+0x4>
+
+000000c0 <initSlave>:
+ *  Author: Barbaritos
+ */ 
+#include "Slave.h"
+void initSlave()
+{
+	DDRB |= (1<<PORTB4); // Miso como salida
+  c0:	84 b1       	in	r24, 0x04	; 4
+  c2:	80 61       	ori	r24, 0x10	; 16
+  c4:	84 b9       	out	0x04, r24	; 4
+	DDRB &= ~((1<<PORTB3)|(1<<PORTB5)|(1<<PORTB2)); //MOSI, SCK, SS como entradas.
+  c6:	84 b1       	in	r24, 0x04	; 4
+  c8:	83 7d       	andi	r24, 0xD3	; 211
+  ca:	84 b9       	out	0x04, r24	; 4
+	
+	SPCR &= ~((1<<MSTR)|(1<<CPOL)|(1<<CPHA)|(1<<DORD)); //esclavo seleccionado, CLK POLARITY 0, CLK PHASE 0, ORDEN DE ENVIO
+  cc:	8c b5       	in	r24, 0x2c	; 44
+  ce:	83 7c       	andi	r24, 0xC3	; 195
+  d0:	8c bd       	out	0x2c, r24	; 44
+	
+	SPCR |= (1<<SPE); //COMUNICACIÓN HABILITADA
+  d2:	8c b5       	in	r24, 0x2c	; 44
+  d4:	80 64       	ori	r24, 0x40	; 64
+  d6:	8c bd       	out	0x2c, r24	; 44
+  d8:	08 95       	ret
+
+000000da <_exit>:
+  da:	f8 94       	cli
+
+000000dc <__stop_program>:
+  dc:	ff cf       	rjmp	.-2      	; 0xdc <__stop_program>
