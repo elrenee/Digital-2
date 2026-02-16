@@ -9,6 +9,9 @@ Discarded input sections
 
  .data          0x00000000        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .bss           0x00000000        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
+ .text          0x00000000        0x0 ADC/ADC.o
+ .data          0x00000000        0x0 ADC/ADC.o
+ .bss           0x00000000        0x0 ADC/ADC.o
  .text          0x00000000        0x0 I2C/I2C.o
  .data          0x00000000        0x0 I2C/I2C.o
  .bss           0x00000000        0x0 I2C/I2C.o
@@ -30,10 +33,26 @@ Discarded input sections
  .text          0x00000000        0x0 PWM/PWM.o
  .data          0x00000000        0x0 PWM/PWM.o
  .bss           0x00000000        0x0 PWM/PWM.o
+ .text.initPWM  0x00000000       0x2c PWM/PWM.o
+ .text.initPWM2
+                0x00000000       0x28 PWM/PWM.o
+ .text.movservo1
+                0x00000000        0xa PWM/PWM.o
  .text.movservo2
                 0x00000000        0xa PWM/PWM.o
  .text.movservo3
                 0x00000000        0x6 PWM/PWM.o
+ .text.movservo4
+                0x00000000        0x6 PWM/PWM.o
+ .debug_info    0x00000000      0x152 PWM/PWM.o
+ .debug_abbrev  0x00000000       0x90 PWM/PWM.o
+ .debug_aranges
+                0x00000000       0x48 PWM/PWM.o
+ .debug_ranges  0x00000000       0x38 PWM/PWM.o
+ .debug_line    0x00000000      0x146 PWM/PWM.o
+ .debug_str     0x00000000      0x208 PWM/PWM.o
+ .comment       0x00000000       0x31 PWM/PWM.o
+ .debug_frame   0x00000000       0x74 PWM/PWM.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
@@ -83,6 +102,7 @@ Linker script and memory map
 
 Address of section .data set to 0x800100
 LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
+LOAD ADC/ADC.o
 LOAD I2C/I2C.o
 LOAD main.o
 LOAD PWM/PWM.o
@@ -195,7 +215,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x1e0
+.text           0x00000000      0x212
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -269,7 +289,6 @@ END GROUP
                 0x0000008c                __vector_4
                 0x0000008c                __vector_9
                 0x0000008c                __vector_2
-                0x0000008c                __vector_21
                 0x0000008c                __vector_15
                 0x0000008c                __vector_8
                 0x0000008c                __vector_14
@@ -279,32 +298,26 @@ END GROUP
                 0x0000008c                __vector_20
                 0x00000090                . = ALIGN (0x2)
  *(.text.*)
+ .text.initADC  0x00000090       0x26 ADC/ADC.o
+                0x00000090                initADC
  .text.initslave
-                0x00000090       0x14 I2C/I2C.o
-                0x00000090                initslave
- .text.setup    0x000000a4       0x14 main.o
-                0x000000a4                setup
- .text.main     0x000000b8       0x26 main.o
-                0x000000b8                main
+                0x000000b6       0x14 I2C/I2C.o
+                0x000000b6                initslave
+ .text.setup    0x000000ca       0x10 main.o
+                0x000000ca                setup
+ .text.main     0x000000da        0x6 main.o
+                0x000000da                main
  .text.__vector_24
-                0x000000de       0x9a main.o
-                0x000000de                __vector_24
- .text.initPWM  0x00000178       0x2c PWM/PWM.o
-                0x00000178                initPWM
- .text.initPWM2
-                0x000001a4       0x28 PWM/PWM.o
-                0x000001a4                initPWM2
- .text.movservo1
-                0x000001cc        0xa PWM/PWM.o
-                0x000001cc                movservo1
- .text.movservo4
-                0x000001d6        0x6 PWM/PWM.o
-                0x000001d6                movservo4
-                0x000001dc                . = ALIGN (0x2)
+                0x000000e0       0xba main.o
+                0x000000e0                __vector_24
+ .text.__vector_21
+                0x0000019a       0x74 main.o
+                0x0000019a                __vector_21
+                0x0000020e                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000001dc        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x000001dc                _exit
-                0x000001dc                exit
+ .fini9         0x0000020e        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x0000020e                _exit
+                0x0000020e                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -323,11 +336,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000001dc        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x0000020e        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x000001e0                _etext = .
+                0x00000212                _etext = .
 
-.data           0x00800100        0x0 load address 0x000001e0
+.data           0x00800100        0x0 load address 0x00000212
                 [!provide]                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -339,28 +352,34 @@ END GROUP
                 0x00800100                _edata = .
                 [!provide]                PROVIDE (__data_end, .)
 
-.bss            0x00800100        0x6
+.bss            0x00800100        0x5
                 0x00800100                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.servo3    0x00800100        0x2 main.o
-                0x00800100                servo3
- .bss.servo     0x00800102        0x2 main.o
-                0x00800102                servo
- .bss.adc       0x00800104        0x1 main.o
-                0x00800104                adc
- .bss.buffer    0x00800105        0x1 main.o
-                0x00800105                buffer
+ .bss.enviodedatos
+                0x00800100        0x1 main.o
+                0x00800100                enviodedatos
+ .bss.sensor_luz
+                0x00800101        0x1 main.o
+                0x00800101                sensor_luz
+ .bss.sensoraire
+                0x00800102        0x1 main.o
+                0x00800102                sensoraire
+ .bss.contconversion
+                0x00800103        0x1 main.o
+                0x00800103                contconversion
+ .bss.buffer    0x00800104        0x1 main.o
+                0x00800104                buffer
  *(COMMON)
-                0x00800106                PROVIDE (__bss_end, .)
-                0x000001e0                __data_load_start = LOADADDR (.data)
-                0x000001e0                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00800105                PROVIDE (__bss_end, .)
+                0x00000212                __data_load_start = LOADADDR (.data)
+                0x00000212                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800106        0x0
+.noinit         0x00800105        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800106                _end = .
+                0x00800105                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -402,10 +421,10 @@ END GROUP
 
 .comment        0x00000000       0x30
  *(.comment)
- .comment       0x00000000       0x30 I2C/I2C.o
+ .comment       0x00000000       0x30 ADC/ADC.o
                                  0x31 (size before relaxing)
+ .comment       0x00000030       0x31 I2C/I2C.o
  .comment       0x00000030       0x31 main.o
- .comment       0x00000030       0x31 PWM/PWM.o
 
 .note.gnu.avr.deviceinfo
                 0x00000000       0x40
@@ -427,59 +446,59 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0xc8
+.debug_aranges  0x00000000       0xa8
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x50 I2C/I2C.o
+                0x00000000       0x20 ADC/ADC.o
  .debug_aranges
-                0x00000050       0x30 main.o
+                0x00000020       0x50 I2C/I2C.o
  .debug_aranges
-                0x00000080       0x48 PWM/PWM.o
+                0x00000070       0x38 main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xa89
+.debug_info     0x00000000      0x979
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_info    0x000005f4      0x17d I2C/I2C.o
- .debug_info    0x00000771      0x1c6 main.o
- .debug_info    0x00000937      0x152 PWM/PWM.o
+ .debug_info    0x000005f4       0x83 ADC/ADC.o
+ .debug_info    0x00000677      0x17d I2C/I2C.o
+ .debug_info    0x000007f4      0x185 main.o
 
-.debug_abbrev   0x00000000      0x82f
+.debug_abbrev   0x00000000      0x7ec
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_abbrev  0x000005a2       0xfa I2C/I2C.o
- .debug_abbrev  0x0000069c      0x103 main.o
- .debug_abbrev  0x0000079f       0x90 PWM/PWM.o
+ .debug_abbrev  0x000005a2       0x51 ADC/ADC.o
+ .debug_abbrev  0x000005f3       0xfa I2C/I2C.o
+ .debug_abbrev  0x000006ed       0xff main.o
 
-.debug_line     0x00000000      0x612
+.debug_line     0x00000000      0x5cf
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x134 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_line    0x00000134      0x207 I2C/I2C.o
- .debug_line    0x0000033b      0x191 main.o
- .debug_line    0x000004cc      0x146 PWM/PWM.o
+ .debug_line    0x00000134       0xc0 ADC/ADC.o
+ .debug_line    0x000001f4      0x207 I2C/I2C.o
+ .debug_line    0x000003fb      0x1d4 main.o
 
-.debug_frame    0x00000000      0x158
+.debug_frame    0x00000000      0x134
  *(.debug_frame)
- .debug_frame   0x00000000       0x84 I2C/I2C.o
- .debug_frame   0x00000084       0x60 main.o
- .debug_frame   0x000000e4       0x74 PWM/PWM.o
+ .debug_frame   0x00000000       0x24 ADC/ADC.o
+ .debug_frame   0x00000024       0x84 I2C/I2C.o
+ .debug_frame   0x000000a8       0x8c main.o
 
-.debug_str      0x00000000      0x484
+.debug_str      0x00000000      0x45b
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_str     0x00000208      0x1dd I2C/I2C.o
+ .debug_str     0x00000208      0x173 ADC/ADC.o
+                                0x1a7 (size before relaxing)
+ .debug_str     0x0000037b       0x7f I2C/I2C.o
                                 0x211 (size before relaxing)
- .debug_str     0x000003e5       0x57 main.o
-                                0x208 (size before relaxing)
- .debug_str     0x0000043c       0x48 PWM/PWM.o
-                                0x208 (size before relaxing)
+ .debug_str     0x000003fa       0x61 main.o
+                                0x213 (size before relaxing)
 
-.debug_loc      0x00000000      0x154
+.debug_loc      0x00000000      0x1aa
  *(.debug_loc)
  .debug_loc     0x00000000       0xb4 I2C/I2C.o
- .debug_loc     0x000000b4       0xa0 main.o
+ .debug_loc     0x000000b4       0xf6 main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -499,11 +518,11 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0x98
+.debug_ranges   0x00000000       0x78
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x40 I2C/I2C.o
- .debug_ranges  0x00000040       0x20 main.o
- .debug_ranges  0x00000060       0x38 PWM/PWM.o
+ .debug_ranges  0x00000000       0x10 ADC/ADC.o
+ .debug_ranges  0x00000010       0x40 I2C/I2C.o
+ .debug_ranges  0x00000050       0x28 main.o
 
 .debug_macro
  *(.debug_macro)

@@ -3,7 +3,7 @@
  *
  * Created:09/02/2026  
  * Author: René David González Herrera 
- * Description: Proyecto 01,Digital 2. Esclavo comunicación I2C.
+ * Description: Proyecto 01,Digital 2. Esclavo comunicación I2C. en el cual leeremos todos los sensores y prepararemos la data para cuando el maestro la requiera.
  */
 /****************************************/
 
@@ -12,16 +12,14 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "I2C/I2C.h"
-#include "PWM/PWM.h"
-#define slave1 0x10
-//MAESTRO LEER O ESCRIBIR
-#define slave1R (0x10<<1)|0x01
-#define  slave1W (0x10<<1)& 0xFE
+#include "ADC/ADC.h"
+#define slave1 0x10 //Direccion del esclavo encargado de los sensores.
 
 uint8_t buffer =0;
-volatile uint8_t adc=0;
-uint16_t servo=0;
-uint16_t servo3=0;
+volatile uint8_t contconversion=0;// INdice de recoleccion de datos 
+uint8_t sensoraire=0; //Canal 1 de ADC A1
+uint8_t sensor_luz=0;//Canal 0 de ADC A0
+uint8_t enviodedatos =0; //Indice de envio de datos
 /****************************************/
 // Function prototypes
 void setup();
@@ -35,12 +33,7 @@ int main(void)
 	setup();
 	while(1)
 	{
-		servo= 1200+(0*14.12);
-		movservo1(servo);
-		servo3= 16+(0/17);
-		movservo4(servo3);
-		//if(buffer=='r') Quiere leer o escribir
-		//{buffer=0;}
+		
 	}
 }
 
@@ -50,8 +43,7 @@ void setup()
 {
 	cli();
 	initslave(slave1);
-	initPWM();
-	initPWM2();
+	initADC();
 	sei();
 }
 
@@ -75,7 +67,15 @@ ISR(TWI_vect)
 			break;
 		case 0xA8: //SLA+R
 		case 0xB8://Dato mandamos un dato y nos regresaron por otro
-			TWDR= adc;//enviamos el dato
+			if (enviodedatos==0)//Indice de envio de datos, Sensor de aire
+			{
+				TWDR=sensoraire; //enviamos valor de 0 a 255 de sensor
+				enviodedatos=1;//Acomodamos el indice para la proxima vez
+			}else if (enviodedatos==1) //Indice de envio de datos, Sensor de LUZ data send
+			{
+				TWDR=sensor_luz;//Enviamos el dato
+				enviodedatos=0;//acomodamos el indice para la proxima vez
+			}
 			TWCR=  (1<<TWINT)|(1<<TWEN)|(1<<TWIE)|(1<<TWEA);
 			break;
 		case 0xC0:
@@ -90,4 +90,23 @@ ISR(TWI_vect)
 			TWCR= (1<<TWINT)|(1<<TWEN)|(1<<TWIE)|(1<<TWEA);
 			break;
 	}
+}
+
+ISR (ADC_vect)
+{
+	if (contconversion==0)//Lectura de Aire
+	{
+		contconversion=1;
+		ADMUX &= ~(1<<MUX0); //Escogemos el canal 0, Sensor de luz
+		sensoraire=ADCH;//Esta lectura es del sensor de aire en el canal 1.
+		ADCSRA |= (1<<ADSC);//Iniciamos conversion
+	}
+	else if (contconversion==1) //Lectura de Luz
+	{
+		contconversion=0;
+		ADMUX |= (1<<MUX0);//Canal 1 escogido para ir a leer el sensor de aire
+		sensor_luz=ADCH; //Esta lectura es de luz.
+		ADCSRA |=(1<<ADSC);
+	}
+	
 }
