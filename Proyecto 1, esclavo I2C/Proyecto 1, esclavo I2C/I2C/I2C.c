@@ -78,9 +78,9 @@ uint8_t masterread(uint8_t *buffer, uint8_t ack)
 
 //Inicializar Esclavo
 
-void initslave(uint8_t address)
+void initslave(uint8_t slaveaddress)
 {
-	DDRC &= ~((1<<PORTD4)|(1<<PORTD5)); //Pines I2c como entradas
-	TWAR =address<<1; //nombre o direccion sin general call
-	TWCR = (1<<TWEA)|(1<<TWEN)|(1<<TWIE); //Habilitamos I2C,ACK automatico, ISR habilitadas
+	DDRC &= ~((1<<PORTC4)|(1<<PORTC5)); //Pines I2c como entradas
+	TWAR =slaveaddress<<1; //nombre o direccion sin general call
+	TWCR = (1<<TWEA)|(1<<TWEN)|(1<<TWIE)|(1<<TWINT); //Habilitamos I2C,ACK automatico, ISR habilitadas
 }

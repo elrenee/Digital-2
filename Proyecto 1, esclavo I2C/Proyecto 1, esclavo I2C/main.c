@@ -53,7 +53,7 @@ void setup()
 
 ISR(TWI_vect)
 {
-	uint8_t estado= TWSR&0xFC; //estado sera el por que ocurrio la interrupción
+	uint8_t estado= TWSR&0xF8; //estado sera el por que ocurrio la interrupción
 	switch (estado){
 		case 0x60:
 		case 0x70://es un GNRL call o un SLA+W
@@ -80,8 +80,7 @@ ISR(TWI_vect)
 			break;
 		case 0xC0:
 		case 0xC8: //Dato enviado y no ACK o se envio el ultimo dato. 
-			TWCR=0;
-			TWCR=  (1<<TWEN)|(1<<TWIE)|(1<<TWEA);
+			TWCR=  (1<<TWEN)|(1<<TWIE)|(1<<TWEA)|(1<<TWINT);
 			break;
 		case 0x0A: //STOP o REPEATED start
 			TWCR= (1<<TWINT)|(1<<TWEN)|(1<<TWIE)|(1<<TWEA);

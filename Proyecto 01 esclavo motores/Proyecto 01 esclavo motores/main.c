@@ -29,7 +29,8 @@ uint8_t dia=0;
 uint8_t calor=0;
 uint8_t humo=0;
 
-uint8_t servo=0;
+uint8_t servo=0; //PB1
+//extractor o dc en el PD5
 /****************************************/
 // Function prototypes
 void setup();
@@ -41,34 +42,7 @@ int main(void)
 	setup();
 	while(1)
 	{
-		//Vemos los datos de cada sensor
-		if(temperatura<85)//Datos que vienen de el sensor de temperatura
-			calor=0; //Calor 0 = poco calor
-		else if ((temperatura>=85) && (temperatura <170))
-			calor=1; //calor intermedio
-		else if (temperatura>=170)
-			calor=2;
-		//Vemos los datos que vienen del sensor de LUZ
-		if (luz<127) 
-			dia =1;
-		else if (luz >= 127)
-			dia=0;
-		//Vemos los datos que vienen del sensor de calidad de aire
-		if (aire<127)
-			humo=0;
-		else if (aire>= 127)
-			humo=1;
-			
-		if ((calor==0)&&(dia==1)&&(humo==0))
-		{
-			PORTD &= ~(1<<PORTD5); //extractor apagado
-			//servo=  angulo para que se cierre la ventana
-			movservo1(servo); //servo
-			//cerrarcortina();
-		}//else if ()
-		//{
-			
-		//}
+		
 	}
 }
 
@@ -88,7 +62,7 @@ void setup()
 //Interrupt subroutines
 ISR(TWI_vect)
 {
-	uint8_t estado= TWSR&0xFC; //estado sera el por que ocurrio la interrupción
+	uint8_t estado= TWSR&0xF8; //estado sera el por que ocurrio la interrupción
 	switch (estado){
 		case 0x60:
 		case 0x70://es un GNRL call o un SLA+W
