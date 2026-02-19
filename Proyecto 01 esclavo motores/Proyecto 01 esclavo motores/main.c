@@ -24,7 +24,11 @@ uint8_t indicereceipt=0;
 uint8_t DC=0;
 uint8_t stepper=0;
 uint8_t servo=0; //PB1
-//extractor o dc en el PD5
+uint16_t angulo=0;
+uint8_t abierto=1;
+uint8_t cerrado =0;
+//extractor o dc en el PD4
+//STEPPER  del D0-D3
 /****************************************/
 // Function prototypes
 void setup();
@@ -35,8 +39,39 @@ int main(void)
 {
 	setup();
 	while(1)
-	{
-		
+	{	
+		if (DC==0)
+		{
+			PORTD &=~(1<<PORTD4);
+		}
+		else if (DC==1)
+		{
+			PORTD |= (1<<PORTD4);
+		}
+		_delay_ms(100);
+		if (stepper==0 && cerrado==0)//0 es cerrar 
+		{
+			girarPorTiempo(10000, 1); //cierra contra las agujas	
+			cerrado=1;
+			abierto=0;
+		}
+		if(stepper==1 && abierto==0){
+			girarPorTiempo(10000, 0);
+			cerrado=0;
+			abierto=1;
+		}
+		_delay_ms(100);
+		if (servo==0){
+			angulo=1600; //Ocr1a para 20 grados en el servo.
+			movservo2(angulo);
+		}else if(servo==1){
+			angulo=2100;
+			movservo2(angulo);
+		}else if(servo==2){
+			angulo=2993;
+			movservo2(angulo);
+		}
+		_delay_ms(100);
 	}
 }
 
@@ -47,7 +82,8 @@ void setup()
 	cli();
 	initslave(slave2);
 	initPWM();
-	DDRD |= (1<<PORTD5);
+	DDRD =0x1F;// Salidas de el Stepper y el DC.
+	PORTD=0; //0V inicialmente...
 	sei();
 }
 
