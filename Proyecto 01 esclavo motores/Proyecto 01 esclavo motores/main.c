@@ -15,20 +15,14 @@
 #include <stdbool.h>
 #include "I2C/I2C.h"
 #include "PWM/PWM.h"
+#include "Stepper/stepper.h"
 
-#define slave2 0x20
+#define slave2 0x40
 uint8_t buffer=0;
 
 uint8_t indicereceipt=0;
-
-uint8_t temperatura=0;
-uint8_t luz=0;
-uint8_t aire=0;
-
-uint8_t dia=0;
-uint8_t calor=0;
-uint8_t humo=0;
-
+uint8_t DC=0;
+uint8_t stepper=0;
 uint8_t servo=0; //PB1
 //extractor o dc en el PD5
 /****************************************/
@@ -73,14 +67,16 @@ ISR(TWI_vect)
 		case 0x90://escribieron a todos y mande el ack
 		if (indicereceipt==0)//Primera recepción
 		{
-			//variable sensor X= TWDR;
+			DC= TWDR; //Motor DC encendido o apagado
 			indicereceipt=1; 
 		}else if (indicereceipt==1)//segunda recepción
 		{
+			stepper=TWDR;
 			indicereceipt=2;
 			
 		}else if (indicereceipt==2)//tercera recepción
 		{
+			servo=TWDR;
 			indicereceipt=0;
 		}
 		TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWIE)|(1<<TWEA);
