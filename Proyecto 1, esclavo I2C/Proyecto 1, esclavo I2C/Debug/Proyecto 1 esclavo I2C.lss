@@ -15,11 +15,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000000a8  00000000  00000000  000002ec  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000979  00000000  00000000  00000394  2**0
+  6 .debug_info   0000097a  00000000  00000000  00000394  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000007ec  00000000  00000000  00000d0d  2**0
+  7 .debug_abbrev 000007ec  00000000  00000000  00000d0e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000005c9  00000000  00000000  000014f9  2**0
+  8 .debug_line   000005c9  00000000  00000000  000014fa  2**0
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  00000128  00000000  00000000  00001ac4  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -148,7 +148,7 @@ void setup()
 	cli();
   ca:	f8 94       	cli
 	initslave(slave1);
-  cc:	80 e1       	ldi	r24, 0x10	; 16
+  cc:	80 e3       	ldi	r24, 0x30	; 48
   ce:	0e 94 5b 00 	call	0xb6	; 0xb6 <initslave>
 	initADC();
   d2:	0e 94 48 00 	call	0x90	; 0x90 <initADC>

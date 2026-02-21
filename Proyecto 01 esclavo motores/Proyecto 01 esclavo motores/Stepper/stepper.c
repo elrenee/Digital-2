@@ -15,7 +15,7 @@ const uint8_t secuencia[4] = {
 };
 
 static int pasoActual = 0;
-static const int intervaloPasos = 7; // ms entre cada paso
+static const int intervaloPasos = 5; // ms entre cada paso
 
 // Girar el motor 
 void girarPorTiempo(unsigned long tiempoMs, int direccionHoraria) {

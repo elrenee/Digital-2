@@ -13,7 +13,7 @@
 #include <avr/interrupt.h>
 #include "I2C/I2C.h"
 #include "ADC/ADC.h"
-#define slave1 0x10 //Direccion del esclavo encargado de los sensores.
+#define slave1 0x30 //Direccion del esclavo encargado de los sensores.
 
 uint8_t buffer =0;
 volatile uint8_t contconversion=0;// INdice de recoleccion de datos 
