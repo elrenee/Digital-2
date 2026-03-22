@@ -44,6 +44,7 @@
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
 
+UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -51,6 +52,7 @@ uint16_t ADCvalor[2];
 uint8_t estadoADC=0;
 uint16_t contador=0;
 char array[6];
+uint8_t control[1];
 
 /* USER CODE END PV */
 
@@ -60,6 +62,7 @@ static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -101,7 +104,9 @@ int main(void)
   MX_DMA_Init();
   MX_ADC1_Init();
   MX_USART2_UART_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  HAL_UART_Receive_IT(&huart1, control, 1);
   HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADCvalor, 2);
   uint8_t test[]= "aa\r\n";
   HAL_UART_Transmit(&huart2, test, sizeof(test), HAL_MAX_DELAY);
@@ -115,7 +120,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  contador++;
-	  HAL_Delay(500);
+//	  HAL_Delay(500);
 	  if (estadoADC){
 
 		  estadoADC=0;
@@ -248,6 +253,39 @@ static void MX_ADC1_Init(void)
 }
 
 /**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 9615;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_8;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
@@ -336,8 +374,35 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc){
-	estadoADC=1;
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+	switch (control[0]){
+			case 'u':{
+				uint8_t text[]= "Boton Arriba\r\n";
+				HAL_UART_Transmit(&huart2, text, sizeof(text), HAL_MAX_DELAY);
+				break;
+			}
+			case 'd':{
+				uint8_t text[]= "Boton Abajo\r\n";
+				HAL_UART_Transmit(&huart2, text, sizeof(text), HAL_MAX_DELAY);
+				break;}
+			case 'r':{
+				uint8_t text[]= "Boton derecho\r\n";
+				HAL_UART_Transmit(&huart2, text, sizeof(text), HAL_MAX_DELAY);
+				break;}
+			case 'l':{
+				uint8_t text[]= "Boton Izquierdo\r\n";
+				HAL_UART_Transmit(&huart2, text, sizeof(text), HAL_MAX_DELAY);
+				break;}
+			case 'a':{
+				uint8_t text[]= "Boton A\r\n";
+				HAL_UART_Transmit(&huart2, text, sizeof(text), HAL_MAX_DELAY);
+				break;}
+			case 'b':{
+				uint8_t text[]= "Boton B\r\n";
+				HAL_UART_Transmit(&huart2, text, sizeof(text), HAL_MAX_DELAY);
+				break;}
+	}
+	HAL_UART_Receive_IT(&huart1, control, 1);
 }
 /* USER CODE END 4 */
 

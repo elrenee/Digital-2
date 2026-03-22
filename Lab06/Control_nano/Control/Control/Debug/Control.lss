@@ -3,31 +3,31 @@ Control.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000030  00800100  000002ac  00000340  2**0
+  0 .data         00000012  00800100  000002ac  00000340  2**0
                   CONTENTS, ALLOC, LOAD, DATA
   1 .text         000002ac  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000002  00800130  00800130  00000370  2**0
+  2 .bss          00000002  00800112  00800112  00000352  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000370  2**0
+  3 .comment      00000030  00000000  00000000  00000352  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000003a0  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000384  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000078  00000000  00000000  000003e0  2**0
+  5 .debug_aranges 00000078  00000000  00000000  000003c4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000091a  00000000  00000000  00000458  2**0
+  6 .debug_info   0000091a  00000000  00000000  0000043c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000788  00000000  00000000  00000d72  2**0
+  7 .debug_abbrev 00000788  00000000  00000000  00000d56  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000048a  00000000  00000000  000014fa  2**0
+  8 .debug_line   0000048a  00000000  00000000  000014de  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000013c  00000000  00000000  00001984  2**2
+  9 .debug_frame  0000013c  00000000  00000000  00001968  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000406  00000000  00000000  00001ac0  2**0
+ 10 .debug_str    00000406  00000000  00000000  00001aa4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000252  00000000  00000000  00001ec6  2**0
+ 11 .debug_loc    00000252  00000000  00000000  00001eaa  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000058  00000000  00000000  00002118  2**0
+ 12 .debug_ranges 00000058  00000000  00000000  000020fc  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -77,13 +77,13 @@ Disassembly of section .text:
   7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
   80:	05 90       	lpm	r0, Z+
   82:	0d 92       	st	X+, r0
-  84:	a0 33       	cpi	r26, 0x30	; 48
+  84:	a2 31       	cpi	r26, 0x12	; 18
   86:	b1 07       	cpc	r27, r17
   88:	d9 f7       	brne	.-10     	; 0x80 <__do_copy_data+0xc>
 
 0000008a <__do_clear_bss>:
   8a:	21 e0       	ldi	r18, 0x01	; 1
-  8c:	a0 e3       	ldi	r26, 0x30	; 48
+  8c:	a2 e1       	ldi	r26, 0x12	; 18
   8e:	b1 e0       	ldi	r27, 0x01	; 1
   90:	01 c0       	rjmp	.+2      	; 0x94 <.do_clear_bss_start>
 
@@ -91,7 +91,7 @@ Disassembly of section .text:
   92:	1d 92       	st	X+, r1
 
 00000094 <.do_clear_bss_start>:
-  94:	a2 33       	cpi	r26, 0x32	; 50
+  94:	a4 31       	cpi	r26, 0x14	; 20
   96:	b2 07       	cpc	r27, r18
   98:	e1 f7       	brne	.-8      	; 0x92 <.do_clear_bss_loop>
   9a:	0e 94 7f 00 	call	0xfe	; 0xfe <main>
@@ -199,7 +199,7 @@ ISR(PCINT0_vect)
 	//PORTB ^= (1 << PORTB5);
 	botonesB= PINB; //vemos como estan los botones y en 10 ms veremos nuevamente
  112:	83 b1       	in	r24, 0x03	; 3
- 114:	80 93 31 01 	sts	0x0131, r24	; 0x800131 <botonesB>
+ 114:	80 93 13 01 	sts	0x0113, r24	; 0x800113 <botonesB>
 	TIFR0 = (1<<TOV0); //limpiamos la bandera de Overflow
  118:	81 e0       	ldi	r24, 0x01	; 1
  11a:	85 bb       	out	0x15, r24	; 21
@@ -230,7 +230,7 @@ ISR(PCINT1_vect){
  142:	9f 93       	push	r25
 	BotonesC=PINC;	
  144:	86 b1       	in	r24, 0x06	; 6
- 146:	80 93 30 01 	sts	0x0130, r24	; 0x800130 <__data_end>
+ 146:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <__data_end>
 	TIFR0 = (1<<TOV0); //limpiamos la bandera de Overflow
  14a:	81 e0       	ldi	r24, 0x01	; 1
  14c:	85 bb       	out	0x15, r24	; 21
@@ -276,82 +276,82 @@ ISR(TIMER0_OVF_vect) //occurre la interrupción
 	uint8_t botonest0 = PINB; //vemos nuevamente como estan los botones apachado/no apachados
  18e:	93 b1       	in	r25, 0x03	; 3
 	if (botonesB == botonest0)	//estan igual que antes??
- 190:	80 91 31 01 	lds	r24, 0x0131	; 0x800131 <botonesB>
+ 190:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <botonesB>
  194:	98 13       	cpse	r25, r24
  196:	2c c0       	rjmp	.+88     	; 0x1f0 <__vector_16+0x88>
 	{
 		if(!(botonesB & (1 << PORTB0)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
- 198:	80 91 31 01 	lds	r24, 0x0131	; 0x800131 <botonesB>
+ 198:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <botonesB>
  19c:	80 fd       	sbrc	r24, 0
  19e:	05 c0       	rjmp	.+10     	; 0x1aa <__vector_16+0x42>
 		{
-			writecadena("BotB\n");
+			writecadena("b\n");
  1a0:	80 e0       	ldi	r24, 0x00	; 0
  1a2:	91 e0       	ldi	r25, 0x01	; 1
  1a4:	0e 94 3e 01 	call	0x27c	; 0x27c <writecadena>
  1a8:	23 c0       	rjmp	.+70     	; 0x1f0 <__vector_16+0x88>
 		}
 		else if(!(botonesB & (1 << PORTB3)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
- 1aa:	80 91 31 01 	lds	r24, 0x0131	; 0x800131 <botonesB>
+ 1aa:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <botonesB>
  1ae:	83 fd       	sbrc	r24, 3
  1b0:	05 c0       	rjmp	.+10     	; 0x1bc <__vector_16+0x54>
 		{
-			writecadena("BotA\n");
- 1b2:	86 e0       	ldi	r24, 0x06	; 6
+			writecadena("a\n");
+ 1b2:	83 e0       	ldi	r24, 0x03	; 3
  1b4:	91 e0       	ldi	r25, 0x01	; 1
  1b6:	0e 94 3e 01 	call	0x27c	; 0x27c <writecadena>
  1ba:	1a c0       	rjmp	.+52     	; 0x1f0 <__vector_16+0x88>
 		}
 		else if(!(botonesB & (1 << PORTB1)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
- 1bc:	80 91 31 01 	lds	r24, 0x0131	; 0x800131 <botonesB>
+ 1bc:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <botonesB>
  1c0:	81 fd       	sbrc	r24, 1
  1c2:	05 c0       	rjmp	.+10     	; 0x1ce <__vector_16+0x66>
 		{
-			writecadena("derecha\n");
- 1c4:	8c e0       	ldi	r24, 0x0C	; 12
+			writecadena("r\n");
+ 1c4:	86 e0       	ldi	r24, 0x06	; 6
  1c6:	91 e0       	ldi	r25, 0x01	; 1
  1c8:	0e 94 3e 01 	call	0x27c	; 0x27c <writecadena>
  1cc:	11 c0       	rjmp	.+34     	; 0x1f0 <__vector_16+0x88>
 		}
 		else if(!(botonesB & (1 << PORTB2)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
- 1ce:	80 91 31 01 	lds	r24, 0x0131	; 0x800131 <botonesB>
+ 1ce:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <botonesB>
  1d2:	82 fd       	sbrc	r24, 2
  1d4:	05 c0       	rjmp	.+10     	; 0x1e0 <__vector_16+0x78>
 		{
-			writecadena("izquierda\n");
- 1d6:	85 e1       	ldi	r24, 0x15	; 21
+			writecadena("l\n");
+ 1d6:	89 e0       	ldi	r24, 0x09	; 9
  1d8:	91 e0       	ldi	r25, 0x01	; 1
  1da:	0e 94 3e 01 	call	0x27c	; 0x27c <writecadena>
  1de:	08 c0       	rjmp	.+16     	; 0x1f0 <__vector_16+0x88>
 		}
 		else if(!(botonesB & (1 << PORTB4)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
- 1e0:	80 91 31 01 	lds	r24, 0x0131	; 0x800131 <botonesB>
+ 1e0:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <botonesB>
  1e4:	84 fd       	sbrc	r24, 4
  1e6:	04 c0       	rjmp	.+8      	; 0x1f0 <__vector_16+0x88>
 		{
-			writecadena("arriba\n");
- 1e8:	80 e2       	ldi	r24, 0x20	; 32
+			writecadena("u\n");
+ 1e8:	8c e0       	ldi	r24, 0x0C	; 12
  1ea:	91 e0       	ldi	r25, 0x01	; 1
  1ec:	0e 94 3e 01 	call	0x27c	; 0x27c <writecadena>
 		//else if(!(botonesB & (1 << PORTB5)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
 		//{
-		//	writecadena("abajo\n");
+		//	writecadena("d\n");
 		//}
 	}
 	uint8_t botonest1 = PINC; //vemos nuevamente como estan los botones apachado/no apachados
  1f0:	96 b1       	in	r25, 0x06	; 6
 	if (BotonesC == botonest1)	//estan igual que antes??
- 1f2:	80 91 30 01 	lds	r24, 0x0130	; 0x800130 <__data_end>
+ 1f2:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <__data_end>
  1f6:	98 13       	cpse	r25, r24
  1f8:	08 c0       	rjmp	.+16     	; 0x20a <__vector_16+0xa2>
 	{
 		if(!(BotonesC & (1 << PORTC0)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
- 1fa:	80 91 30 01 	lds	r24, 0x0130	; 0x800130 <__data_end>
+ 1fa:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <__data_end>
  1fe:	80 fd       	sbrc	r24, 0
  200:	04 c0       	rjmp	.+8      	; 0x20a <__vector_16+0xa2>
 		{
-			writecadena("abajo\n");
- 202:	88 e2       	ldi	r24, 0x28	; 40
+			writecadena("d\n");
+ 202:	8f e0       	ldi	r24, 0x0F	; 15
  204:	91 e0       	ldi	r25, 0x01	; 1
  206:	0e 94 3e 01 	call	0x27c	; 0x27c <writecadena>
 		}

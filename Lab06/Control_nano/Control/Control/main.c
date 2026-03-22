@@ -86,27 +86,27 @@ ISR(TIMER0_OVF_vect) //occurre la interrupción
 	{
 		if(!(botonesB & (1 << PORTB0)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
 		{
-			writecadena("BotB\n");
+			writecadena("b\n");
 		}
 		else if(!(botonesB & (1 << PORTB3)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
 		{
-			writecadena("BotA\n");
+			writecadena("a\n");
 		}
 		else if(!(botonesB & (1 << PORTB1)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
 		{
-			writecadena("derecha\n");
+			writecadena("r\n");
 		}
 		else if(!(botonesB & (1 << PORTB2)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
 		{
-			writecadena("izquierda\n");
+			writecadena("l\n");
 		}
 		else if(!(botonesB & (1 << PORTB4)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
 		{
-			writecadena("arriba\n");
+			writecadena("u\n");
 		}
 		//else if(!(botonesB & (1 << PORTB5)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
 		//{
-		//	writecadena("abajo\n");
+		//	writecadena("d\n");
 		//}
 	}
 	uint8_t botonest1 = PINC; //vemos nuevamente como estan los botones apachado/no apachados
@@ -114,7 +114,7 @@ ISR(TIMER0_OVF_vect) //occurre la interrupción
 	{
 		if(!(BotonesC & (1 << PORTC0)))	//como tengo pull up interno, cuando este apachado el boton deberia de ser 0.
 		{
-			writecadena("abajo\n");
+			writecadena("d\n");
 		}
 	}
 	PCICR |= (1<<PCIE0)|(1<<PCIE1);
