@@ -54,6 +54,7 @@ uint16_t contador=0;
 char array[6];
 uint8_t control[1];
 
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -119,25 +120,25 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  contador++;
-//	  HAL_Delay(500);
-	  if (estadoADC){
-
-		  estadoADC=0;
-	  }
-	  if(ADCvalor[0]<=128){
+	  //contador++;
+	  HAL_Delay(500);
+	  if(ADCvalor[0]<=100){
 		  uint8_t test[]= "Abajo\r\n";
 		  HAL_UART_Transmit(&huart2, test, sizeof(test), HAL_MAX_DELAY);
-	  }else {
+	  }else if(ADCvalor[0]>=160) {
 		  uint8_t test[]= "Arriba\r\n";
 		  HAL_UART_Transmit(&huart2, test, sizeof(test), HAL_MAX_DELAY);
+	  }else{
+
 	  }
-	  if(ADCvalor[1]<=128){
+	  if(ADCvalor[1]<=100){
 		  uint8_t test[]= "izquierda\r\n";
 		  HAL_UART_Transmit(&huart2, test, sizeof(test), HAL_MAX_DELAY);
-	  }else {
-		  uint8_t test[]= "derecha\r\n";
+	  }else if(ADCvalor[1]>=160){
+		  uint8_t test[]= "Derecha\r\n";
 		  HAL_UART_Transmit(&huart2, test, sizeof(test), HAL_MAX_DELAY);
+	  }else {
+
 	  }
 
   }
@@ -272,7 +273,7 @@ static void MX_USART1_UART_Init(void)
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
-  huart1.Init.Mode = UART_MODE_RX;
+  huart1.Init.Mode = UART_MODE_TX_RX;
   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   huart1.Init.OverSampling = UART_OVERSAMPLING_8;
   if (HAL_UART_Init(&huart1) != HAL_OK)
