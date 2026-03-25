@@ -35,7 +35,10 @@
 /* USER CODE BEGIN PD */
 #define TIM_FREQ 84000000
 #define sinsize 128
-#define ARR 100
+#define Autoreload 100
+uint32_t Ysen[sinsize];
+#define Pi 3.1415926
+#define PRESSC 1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -44,7 +47,11 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+DAC_HandleTypeDef hdac;
+DMA_HandleTypeDef hdma_dac2;
+
 TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim6;
 
 UART_HandleTypeDef huart2;
 
@@ -106,12 +113,22 @@ int durationsamigo[] = {
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_DAC_Init(void);
+static void MX_TIM6_Init(void);
 /* USER CODE BEGIN PFP */
 int pressForFrecuency (int frecuency);
 void playTone(int *tone, int *durations, int *pause, int size);
 void noTone(void);
+
+
+//DAC musicaaal
+void generarsen(void);
+int calcularAutoreload(int freq);
+void playToneDAC(int *tone, int *durations, int *pause, int size);
+void noToneDAC(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -119,7 +136,7 @@ void noTone(void);
 int pressForFrecuency(int frecuency){
 	if (frecuency==0)
 		return 0;
-	return ((TIM_FREQ/(ARR*frecuency))-1);
+	return ((TIM_FREQ/(Autoreload*frecuency))-1);
 }
 
 void playTone(int *tone, int *durations, int *pause, int size){
@@ -138,6 +155,35 @@ void playTone(int *tone, int *durations, int *pause, int size){
 
 void noTone(void){
 	__HAL_TIM_SET_PRESCALER(&htim1, 0);
+}
+
+void generarsen(void){
+	for(int x=0; x<sinsize; x++){
+		Ysen[x]= ((sin(x*2*Pi/sinsize)+1)*(4096/2));
+	}
+}
+int calcularAutoreload(int freq){
+	if(freq==0)
+		return 0;
+	int TF = sinsize*freq;
+	return ((TIM_FREQ/((PRESSC+1)*TF))-1);
+}
+
+void playToneDAC(int *tone, int *durations, int *pause, int size){
+	for (int i=0; i<size; i++){
+		int valorAutoreload =calcularAutoreload(tone[i]);
+		int dur= durations[i];
+		int PausebetNotes=0;
+		if (pause != NULL)
+			PausebetNotes=pause[i]-durations[i];
+		TIM6->ARR =valorAutoreload;
+		HAL_Delay(dur);//Duracion de nota
+		noToneDAC();
+		HAL_Delay(PausebetNotes);
+	}
+}
+void noToneDAC(void){
+	TIM6->ARR=0;
 }
 /* USER CODE END 0 */
 
@@ -170,10 +216,17 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_TIM1_Init();
   MX_USART2_UART_Init();
+  MX_DAC_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
-
+  generarsen();
+  HAL_DAC_Init(&hdac);
+  HAL_TIM_Base_Start(&htim6);
+  //Iniciamos el DAC
+  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, Ysen, sinsize, DAC_ALIGN_12B_R);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -196,7 +249,7 @@ int main(void)
 	  if(cancion==49)
 	  {
 		  HAL_UART_Transmit(&huart2, (uint8_t*)"Reproduciendo: Estrellita\r\n", 25, 1000);
-		  playTone(melody, durations, NULL, sizeof(melody)/sizeof(int));
+		  playToneDAC(melody, durations, NULL, sizeof(melody)/sizeof(int));
 		  cancion=0;
 		  HAL_UART_Receive_IT(&huart2, control, 1);
 	  }else if (cancion==50){
@@ -254,6 +307,46 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief DAC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_DAC_Init(void)
+{
+
+  /* USER CODE BEGIN DAC_Init 0 */
+
+  /* USER CODE END DAC_Init 0 */
+
+  DAC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN DAC_Init 1 */
+
+  /* USER CODE END DAC_Init 1 */
+
+  /** DAC Initialization
+  */
+  hdac.Instance = DAC;
+  if (HAL_DAC_Init(&hdac) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** DAC channel OUT2 config
+  */
+  sConfig.DAC_Trigger = DAC_TRIGGER_T6_TRGO;
+  sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
+  if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN DAC_Init 2 */
+
+  /* USER CODE END DAC_Init 2 */
+
 }
 
 /**
@@ -331,6 +424,44 @@ static void MX_TIM1_Init(void)
 }
 
 /**
+  * @brief TIM6 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM6_Init(void)
+{
+
+  /* USER CODE BEGIN TIM6_Init 0 */
+
+  /* USER CODE END TIM6_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM6_Init 1 */
+
+  /* USER CODE END TIM6_Init 1 */
+  htim6.Instance = TIM6;
+  htim6.Init.Prescaler = 1-1;
+  htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim6.Init.Period = 1000-1;
+  htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_UPDATE;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim6, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM6_Init 2 */
+
+  /* USER CODE END TIM6_Init 2 */
+
+}
+
+/**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
@@ -364,6 +495,22 @@ static void MX_USART2_UART_Init(void)
 }
 
 /**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Stream6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream6_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream6_IRQn);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -381,21 +528,11 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
-
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : LD2_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
