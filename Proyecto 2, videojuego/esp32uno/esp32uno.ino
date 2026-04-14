@@ -39,27 +39,52 @@ void loop() {
   }
   
 }
-
 void procesarComando() {
-  // Buscar comandos en el buffer
-  if (comandoBuffer.indexOf("F") >= 0) {
-    comandoBuffer = "";
-    Serial.println("ADELANTE - FS detectado");
-  }
-  else if (comandoBuffer.indexOf("BS") >= 0) {
-    comandoBuffer = "";
-    Serial.println("ATRAS - BS detectado");
-  }
-  else if (comandoBuffer.indexOf("RS") >= 0) {
-    comandoBuffer = "";
-    Serial.println("DERECHA - RS detectado");
-  }
-  else if (comandoBuffer.indexOf("LS") >= 0) {
-    comandoBuffer = "";
-    Serial.println("IZQUIERDA - LS detectado");
-  }
-  else if (comandoBuffer.indexOf("ST") >= 0) {
-    comandoBuffer = "";
-    Serial.println("PARAR - ST detectado");
+  // El comando completo debería tener unos 6 caracteres (ej: F01R00)
+  if (comandoBuffer.length() >= 6) {
+    
+    // 1. Extraer dirección adelante/atrás
+    int adelanteatras = 0; // 0: stop, 1: adelante, 2: atrás
+    char ejeY = ' ';
+    
+    if (comandoBuffer.indexOf("F01") >= 0) adelanteatras = 1;
+    else if (comandoBuffer.indexOf("B01") >= 0) adelanteatras = 2;
+
+    // 2. Extraer dirección giro
+    int giro = 0; // 0: stop, 1: derecha, 2: izquierda
+    if (comandoBuffer.indexOf("R01") >= 0) giro = 1;
+    else if (comandoBuffer.indexOf("L01") >= 0) giro = 2;
+
+  // 3. Lógica Combinada
+   // if (adelanteatras == 1 && giro == 1) {
+  // Serial.println("DIAGONAL: Adelante + Derecha");
+   // } 
+    //else if (adelanteatras == 1 && giro == 2) {
+    //  Serial.println("DIAGONAL: Adelante + Izquierda");
+   // }
+    //else if (adelanteatras == 2 && giro == 1) {
+   //   Serial.println("DIAGONAL: Atrás + Derecha");
+    //}
+    //else if (adelanteatras == 2 && giro == 2) {
+      //Serial.println("DIAGONAL: Atrás + Izquierda");
+   // }
+    if (adelanteatras == 1) {
+      Serial.println("u");
+    }
+    else if (adelanteatras == 2) {
+      Serial.println("d");
+    }
+    else if (giro == 1) {
+      Serial.println("r");
+    }
+    else if (giro == 2) {
+      Serial.write("l");
+    }
+    else {
+      Serial.println("s");
+    }
+
+    // Limpiamos el buffer tras procesar el comando completo
+    comandoBuffer = ""; 
   }
 }
