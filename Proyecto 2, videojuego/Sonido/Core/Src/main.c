@@ -56,6 +56,7 @@ TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim6;
 
 UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 uint8_t control[1];
@@ -200,6 +201,7 @@ static void MX_TIM1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_DAC_Init(void);
 static void MX_TIM6_Init(void);
+static void MX_USART3_UART_Init(void);
 /* USER CODE BEGIN PFP */
 int pressForFrecuency (int frecuency);
 void playTone(int *tone, int *durations, int *pause, int size);
@@ -310,13 +312,14 @@ int main(void)
   MX_USART2_UART_Init();
   MX_DAC_Init();
   MX_TIM6_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   //DAC
   generarsen();
   HAL_DAC_Init(&hdac);
   HAL_TIM_Base_Start(&htim6);
   HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2, Ysen, sinsize, DAC_ALIGN_12B_R);
-  HAL_UART_Receive_IT(&huart2, control, 1);
+  HAL_UART_Receive_IT(&huart3, control, 1);
   //Ganador
   //playToneDAC(melody2, durations2, pauses2, sizeof(melody2)/sizeof(int));
   //MAIN
@@ -349,7 +352,6 @@ int main(void)
 	  else if (cancion == '0') {
 		  noToneDAC(); // Asegurarnos que el DAC esté en silencio
 	  }
-	  /* USER CODE END 3 */
   }
   /* USER CODE END 3 */
 }
@@ -587,6 +589,39 @@ static void MX_USART2_UART_Init(void)
 }
 
 /**
+  * @brief USART3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART3_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART3_Init 0 */
+
+  /* USER CODE END USART3_Init 0 */
+
+  /* USER CODE BEGIN USART3_Init 1 */
+
+  /* USER CODE END USART3_Init 1 */
+  huart3.Instance = USART3;
+  huart3.Init.BaudRate = 115200;
+  huart3.Init.WordLength = UART_WORDLENGTH_8B;
+  huart3.Init.StopBits = UART_STOPBITS_1;
+  huart3.Init.Parity = UART_PARITY_NONE;
+  huart3.Init.Mode = UART_MODE_TX_RX;
+  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART3_Init 2 */
+
+  /* USER CODE END USART3_Init 2 */
+
+}
+
+/**
   * Enable DMA controller clock
   */
 static void MX_DMA_Init(void)
@@ -634,7 +669,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	cancion=control[0];
-	HAL_UART_Receive_IT(&huart2, control, 1);
+	HAL_UART_Receive_IT(&huart3, control, 1);
 }
 /* USER CODE END 4 */
 
