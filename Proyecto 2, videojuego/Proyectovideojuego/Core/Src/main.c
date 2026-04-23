@@ -23,7 +23,8 @@
 /* USER CODE BEGIN Includes */
 #include "stdint.h"
 #include <string.h>
-#include "stdio.h"
+#include <stdio.h>
+#include <pitches.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -33,6 +34,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define TIM_FREQ 84000000
+#define Autoreload 100
 
 /* USER CODE END PD */
 
@@ -44,12 +47,46 @@
 /* Private variables ---------------------------------------------------------*/
 TIM_HandleTypeDef htim1;
 
+UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 char array[6];
 uint8_t control[1];
+uint8_t control2[1];
+int tones[] = {
+    NOTE_G4, NOTE_REST, NOTE_G5, NOTE_REST,
+    NOTE_F4, NOTE_REST, NOTE_F5, NOTE_REST,
+    NOTE_E4, NOTE_REST, NOTE_E5, NOTE_REST,
+    NOTE_D4, NOTE_REST, NOTE_D5, NOTE_REST,
+    NOTE_C4, NOTE_REST, NOTE_C5, NOTE_REST,
+    NOTE_AS3, NOTE_REST, NOTE_AS4, NOTE_REST,
+    NOTE_G3, NOTE_REST, NOTE_G4, NOTE_REST,
+    NOTE_G4, NOTE_F4, NOTE_E4, NOTE_D4, NOTE_C4
+};
+
+int durations[] = {
+    150, 50, 150, 50,
+    150, 50, 150, 50,
+    150, 50, 150, 50,
+    150, 50, 150, 50,
+    150, 50, 150, 50,
+    150, 50, 150, 50,
+    150, 50, 150, 50,
+    50, 50, 50, 50, 100
+};
+int pauses[] = {
+    150, 100, 150, 100,
+    150, 100, 150, 100,
+    150, 100, 150, 100,
+    150, 100, 150, 100,
+    150, 100, 150, 100,
+    150, 100, 150, 100,
+    150, 100, 150, 100,
+    50, 50, 50, 50, 100
+};
+int size = sizeof(tones) / sizeof(tones[0]);
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -58,12 +95,38 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_TIM1_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
+int pressForFrecuency (int frecuency);
+void playTone(int *tone, int *durations, int *pause, int size);
+void noTone(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int pressForFrecuency(int frecuency){
+	if (frecuency==0)
+		return 0;
+	return ((TIM_FREQ/(Autoreload*frecuency))-1);
+}
+
+void playTone(int *tone, int *durations, int *pause, int size){
+	for (int i=0; i<size; i++){
+		int prescaler =pressForFrecuency(tone[i]);
+		int dur= durations[i];
+		int PausebetNotes=0;
+		if (pause != NULL)
+			PausebetNotes=pause[i]-durations[i];
+		__HAL_TIM_SET_PRESCALER(&htim1, prescaler);
+		HAL_Delay(dur);
+		noTone();
+		HAL_Delay(PausebetNotes);
+	}
+}
+
+void noTone(void){
+	__HAL_TIM_SET_PRESCALER(&htim1, 0);
+}
 
 /* USER CODE END 0 */
 
@@ -99,11 +162,14 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
   MX_TIM1_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_IT(&huart3, control, 1);
+  HAL_UART_Receive_IT(&huart1, control2, 1);
   uint8_t test[]= "aa\r\n";
   HAL_UART_Transmit(&huart2, test, sizeof(test), HAL_MAX_DELAY);
-
+  //HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_4);
+  //playTone(tones, durations, NULL,  sizeof(tones)/sizeof(int));
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -239,6 +305,39 @@ static void MX_TIM1_Init(void)
 }
 
 /**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_8;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
@@ -345,6 +444,7 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+
 	switch (control[0]){
 			case 'u':{
 				uint8_t text[]= "Boton Arriba\r\n";

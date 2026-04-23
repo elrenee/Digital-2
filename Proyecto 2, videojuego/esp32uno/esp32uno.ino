@@ -40,6 +40,11 @@ void loop() {
   
 }
 void procesarComando() {
+   if (comandoBuffer.indexOf("X") >= 0) {
+    Serial.println("a");
+    comandoBuffer = "";
+    return;
+  }
   // El comando completo debería tener unos 6 caracteres (ej: F01R00)
   if (comandoBuffer.length() >= 6) {
     
@@ -69,19 +74,19 @@ void procesarComando() {
       //Serial.println("DIAGONAL: Atrás + Izquierda");
    // }
     if (adelanteatras == 1) {
-      Serial.println("u");
+      Serial.write("u");
     }
     else if (adelanteatras == 2) {
-      Serial.println("d");
+      Serial.write("d");
     }
     else if (giro == 1) {
-      Serial.println("r");
+      Serial.write("r");
     }
     else if (giro == 2) {
       Serial.write("l");
     }
     else {
-      Serial.println("s");
+      Serial.write("s");
     }
 
     // Limpiamos el buffer tras procesar el comando completo
