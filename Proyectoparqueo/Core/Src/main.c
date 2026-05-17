@@ -25,6 +25,7 @@
 #include "stdint.h"
 #include <stdio.h>
 #include "7seg.h"
+#include "Neopixel.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,9 +53,13 @@ bool sensor1=true;
 bool sensor2=true;
 bool sensor3=true;
 bool sensor4=true;
-volatile uint8_t info=0;
+volatile uint8_t info=0;//Recepción de info I2C
 volatile uint8_t lastinfo=0;
-volatile uint16_t disp=5;
+volatile uint16_t disp=4;//Parqueos disponibles.
+
+//Para enviar que sensor se ocupo y cuantos
+volatile uint8_t sensoresEstado = 0x0F;
+
 
 #define TXBUFFERSIZE 1
 #define RXBUFFERSIZE 1
@@ -112,6 +117,8 @@ int main(void)
   	  if (HAL_I2C_EnableListen_IT(&hi2c1)!= HAL_OK){
   		  Error_Handler();
   	  }
+  	  disp=4;
+  	  pixelClear();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -331,47 +338,61 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 			if(disp > 0){
 				disp--;
 			}
+			sensoresEstado |= (1 << 0);
+			setPixelColor(0, 255, 0, 0);
+			setBrightness(100);
+			pixelShow();
 		}else{
 			if(disp < 8){
 				disp++;
 			}
+			sensoresEstado &= ~(1 << 0);
+			setPixelColor(0, 0, 255, 0);//Verdee
+			setBrightness(100);
+			pixelShow();
 		}
 	}
 	if(GPIO_Pin==Sensor2_Pin){
-			sensor2= !sensor2;
-			if(sensor2){
-				if(disp > 0){
-					disp--;
-				}
-			}else{
-				if(disp < 8){
-					disp++;
-				}
+		sensor2= !sensor2;
+		if(sensor2){
+			if(disp > 0){
+				disp--;
 			}
+			sensoresEstado |= (1 << 1);
+		}else{
+			if(disp < 8){
+				disp++;
+			}
+			sensoresEstado &= ~(1 << 1);
+		}
 	}
 	if(GPIO_Pin==Sensor3_Pin){
-			sensor3= !sensor3;
-			if(sensor3){
-				if(disp > 0){
-					disp--;
-				}
-			}else{
-				if(disp < 8){
-					disp++;
-				}
+		sensor3= !sensor3;
+		if(sensor3){
+			if(disp > 0){
+				disp--;
 			}
+			sensoresEstado |= (1 << 2);
+		}else{
+			if(disp < 8){
+				disp++;
+			}
+			sensoresEstado &= ~(1 << 2);
+		}
 	}
 	if(GPIO_Pin==Sensor4_Pin){
-			sensor4= !sensor4;
-			if(sensor4){
-				if(disp > 0){
-					disp--;
-				}
-			}else{
-				if(disp < 8){
-					disp++;
-				}
+		sensor4= !sensor4;
+		if(sensor4){
+			if(disp > 0){
+				disp--;
 			}
+			sensoresEstado |= (1 << 3);
+		}else{
+			if(disp < 8){
+				disp++;
+			}
+			sensoresEstado &= ~(1 << 3);
+		}
 	}
 }
 
@@ -409,6 +430,7 @@ void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, ui
 		}
 	}//Maestro recibira
 	else if(TransferDirection== I2C_DIRECTION_RECEIVE){
+		aTxBuffer[0] = sensoresEstado;
 		if(HAL_I2C_Slave_Seq_Transmit_IT(hi2c,(uint8_t*)aTxBuffer , 1, I2C_FIRST_AND_LAST_FRAME)!=HAL_OK){
 			Error_Handler();
 		}
