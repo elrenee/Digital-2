@@ -12,7 +12,7 @@
 extern TIM_HandleTypeDef htim1;
 
 #define neoPixel_timer htim1
-#define neoPixel_canal TIM_CHANNEL_1
+#define neoPixel_canal TIM_CHANNEL_2
 
 #define GAMMA_CORRECTION 2.2f
 #define GAMMA 2.2f
